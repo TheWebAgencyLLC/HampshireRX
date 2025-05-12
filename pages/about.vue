@@ -59,7 +59,7 @@
 
 <script setup>
 import { ref, nextTick } from "vue";
-import { gql } from "graphql-tag";
+
 import AppHeader from "../components/layout/appHeader.vue";
 import SearchBar from "../components/searchBar.vue";
 import AppFooter from "~/components/layout/appFooter.vue";
