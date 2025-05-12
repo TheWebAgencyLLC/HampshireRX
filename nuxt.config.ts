@@ -10,6 +10,15 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   runtimeConfig: {
     jwtSecret: process.env.JWT_SECRET, // Make sure this is set via env or directly here
+    stripe: {
+      key: process.env.STRIPE_KEY,
+      options: {},
+    },
+    public: {
+      stripe: {
+        key: process.env.STRIPE_PUBLIC_KEY,
+      },
+    },
   },
   app: {
     head: {
@@ -25,7 +34,14 @@ export default defineNuxtConfig({
       noscript: [...metaPixelConfig.noscript],
     },
   },
-  modules: ["@nuxtjs/tailwindcss", "nuxt-mongoose", "./modules/auth.module"],
+  modules: [
+    "@nuxtjs/tailwindcss",
+    "nuxt-mongoose",
+    "./modules/auth.module",
+    "@unlok-co/nuxt-stripe",
+    "@pinia/nuxt",
+    "pinia-plugin-persistedstate/nuxt",
+  ],
   nitro: {
     experimental: {
       websocket: true,

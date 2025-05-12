@@ -56,6 +56,46 @@
             Prescription Transfer
           </a>
           <NuxtLink
+            v-if="currentRoute !== '/profile'"
+            to="/profile"
+            @click="handleNavClick('profile', '/profile')"
+            class="text-black hover:text-orange-500 transition-colors duration-200 relative"
+          >
+            Profile
+          </NuxtLink>
+
+          <NuxtLink to="/cart" class="relative">
+            Cart
+            <div
+              v-if="cartCount > 0"
+              class="absolute -top-3 -right-4 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"
+            >
+              {{ cartCount }}
+            </div>
+          </NuxtLink>
+          <!-- Add this to your LayoutAppHeader.vue file -->
+          <button
+            @click="useLogout"
+            class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5 mr-1.5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+              />
+            </svg>
+            Logout
+          </button>
+
+          <NuxtLink
             to="https://www.facebook.com/HampshirePharmacy/"
             target="_blank"
             rel="noopener noreferrer"
@@ -227,6 +267,7 @@
 <script setup>
 import { ref } from "vue";
 import { useRoute } from "vue-router";
+import { useCartStore } from "~/composables/useCartStore";
 
 const gtm = useGTM();
 const route = useRoute();
@@ -259,6 +300,8 @@ const handleNavClick = (linkName, navigatingTo) => {
 const toggleMobileMenu = () => {
   isMobileMenuOpen.value = !isMobileMenuOpen.value;
 };
+
+const { cartCount } = useCartStore();
 </script>
 
 <style scoped>

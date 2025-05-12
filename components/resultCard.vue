@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, watch } from "vue";
+import { useCartStore } from "~/composables/useCartStore";
 
 interface Option {
   size: string;
@@ -88,6 +89,31 @@ const selectedOption = computed(() => {
   );
 });
 
+const store = useCartStore();
+
+async function addToCart() {
+  const item = {
+    medication: {
+      name: props.data.name,
+      count: selectedCount.value?.count,
+      countUnit: selectedCount.value?.countUnit,
+      price: parseFloat(price.value),
+    },
+    quantity: 1,
+  };
+  try {
+    const res = await $fetch("/api/user/update-cart", {
+      method: "POST",
+      body: { item },
+    });
+    console.log(res);
+    //@ts-ignore
+    store.setCount(res.cart.length);
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 // Computed property that returns the price for the selected option (or a fallback, e.g., "N/A")
 const price = computed(() => {
   return selectedOption.value?.price ?? "N/A";
@@ -105,6 +131,7 @@ const price = computed(() => {
         Generic For:
         <span class="font-medium text-gray-800">{{ genericFor }}</span>
       </div>
+      <button @click="addToCart">Add to Cart</button>
     </div>
 
     <!-- Selection Section -->
