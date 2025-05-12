@@ -38,13 +38,6 @@ export default defineNuxtConfig({
       noscript: [...metaPixelConfig.noscript],
     },
   },
-  vite: {
-    build: {
-      rollupOptions: {
-        external: ["#internal/nuxt/paths"],
-      },
-    },
-  },
   modules: [
     "@nuxtjs/tailwindcss",
     "nuxt-mongoose",
