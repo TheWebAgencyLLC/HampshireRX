@@ -20,6 +20,10 @@ export default defineNuxtConfig({
       },
     },
   },
+  experimental: {
+    // Other experimental options...
+    extraPageMetaExtractionKeys: [], // Empty array or add specific keys you need
+  },
   app: {
     head: {
       title: metaConfig.title,
