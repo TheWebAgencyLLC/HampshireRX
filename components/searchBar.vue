@@ -98,7 +98,6 @@
 
 <script setup>
 import { ref } from "vue";
-import { gql } from "graphql-tag";
 
 const gtm = useGTM();
 const medList = ref([]);

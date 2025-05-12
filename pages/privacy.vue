@@ -751,7 +751,6 @@ import { ref, nextTick } from "vue";
 import AppHeader from "../components/layout/appHeader.vue";
 import SearchBar from "../components/searchBar.vue";
 import AppFooter from "~/components/layout/appFooter.vue";
-import { gql } from "graphql-tag";
 
 useHead({
   title: "Privacy Policy | Hampshire Pharmacy",
