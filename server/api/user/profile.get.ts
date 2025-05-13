@@ -5,5 +5,5 @@ export default defineEventHandler(async (event) => {
     return false;
   }
   const email = (await _useSession(event)).data.email;
-  return await userSchema.findOne({ email });
+  return await userSchema.findOne({ email }).populate("orders");
 });

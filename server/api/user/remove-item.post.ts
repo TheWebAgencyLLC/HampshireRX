@@ -23,7 +23,7 @@ export default defineEventHandler(async (event) => {
       };
     }
 
-    // Check if the same medication already exists in the cart
+    // Check if the item exists in the cart
     const existingItemIndex = user.cart.findIndex(
       (cartItem) =>
         // Compare medication properties to determine if it's the same medication
@@ -33,38 +33,26 @@ export default defineEventHandler(async (event) => {
         cartItem.medication.price === item.medication.price,
     );
 
-    let updatedUser;
-    console.log(item.quantity);
-    if (existingItemIndex !== -1) {
-      // Calculate the difference to add
-      const currentQuantity = user.cart[existingItemIndex].quantity || 0;
-      const quantityToAdd = (item.quantity || 1) - currentQuantity;
-
-      updatedUser = await userSchema.findOneAndUpdate(
-        { email: userEmail, "cart._id": user.cart[existingItemIndex]._id },
-        { $inc: { "cart.$.quantity": quantityToAdd } },
-        { new: true },
-      );
-
+    if (existingItemIndex === -1) {
       return {
-        statusCode: 200,
-        message: "Item quantity updated in cart",
-        cart: updatedUser?.cart,
-      };
-    } else {
-      // Item doesn't exist, add new item to cart
-      updatedUser = await userSchema.findOneAndUpdate(
-        { email: userEmail },
-        { $push: { cart: item } },
-        { new: true },
-      );
-
-      return {
-        statusCode: 200,
-        message: "Item added to cart",
-        cart: updatedUser?.cart,
+        statusCode: 404,
+        message: "Item not found in cart",
+        cart: user.cart,
       };
     }
+
+    // Remove the item from the cart
+    const updatedUser = await userSchema.findOneAndUpdate(
+      { email: userEmail },
+      { $pull: { cart: { _id: user.cart[existingItemIndex]._id } } },
+      { new: true },
+    );
+
+    return {
+      statusCode: 200,
+      message: "Item removed from cart",
+      cart: updatedUser?.cart,
+    };
   } catch (error: any) {
     return {
       statusCode: 500,

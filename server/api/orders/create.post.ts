@@ -63,8 +63,12 @@ export default defineEventHandler(async (event) => {
       subtotal: subtotal,
       taxAmount: taxAmount,
       total: total,
-      deliveryAddress: deliveryAddress,
-      contactInfo: contactInfo,
+      deliveryAddress: user?.address,
+      contactInfo: {
+        phone: user?.phone,
+        email: user?.email,
+        name: `${user?.firstName} ${user?.lastName}`,
+      },
       notes: notes,
     });
     return {

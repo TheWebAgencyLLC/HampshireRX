@@ -1,10 +1,50 @@
 <script setup lang="ts">
+import { useAuthStore, useCartStore } from "#imports";
+
 const { data: cartData } = await useFetch("/api/user/cart", {
   method: "GET",
+  key: "cart",
 });
+const auth = useAuthStore();
+const isUpdating = ref(false);
+const cart = useCartStore();
 
-const updateQuantity = (item: any, delta: number) => {};
-const removeItem = (index: number) => {};
+const updateQuantity = async (item: any, delta: number) => {
+  try {
+    isUpdating.value = true;
+    const res = await $fetch("/api/user/update-cart", {
+      method: "POST",
+      //@ts-ignore
+      headers: {
+        authorization: auth.authtoken,
+      },
+      body: {
+        item: {
+          ...item,
+          quantity: item.quantity + delta,
+        },
+      },
+    });
+    await refreshNuxtData("cart");
+    isUpdating.value = false;
+  } catch (e) {
+    console.error(e);
+  }
+};
+const removeItem = async (item: any) => {
+  try {
+    const res = await $fetch("/api/user/remove-item", {
+      method: "POST",
+      body: {
+        item,
+      },
+    });
+    await refreshNuxtData("cart");
+    cart.setCount(cartData.value?.cart.length);
+  } catch (e: any) {
+    console.error(e);
+  }
+};
 
 const calculateTotal = () => {
   return cartData.value?.cart.reduce((total, item) => {
@@ -50,12 +90,13 @@ const calculateTotal = () => {
                       <button
                         @click="updateQuantity(item, -1)"
                         class="px-3 py-1 text-gray-500 hover:bg-gray-100 focus:outline-none"
-                        :disabled="item.quantity <= 1"
+                        :disabled="item.quantity <= 1 || isUpdating"
                       >
                         -
                       </button>
                       <span class="px-3 py-1">{{ item.quantity }}</span>
                       <button
+                        :disabled="isUpdating"
                         @click="updateQuantity(item, 1)"
                         class="px-3 py-1 text-gray-500 hover:bg-gray-100 focus:outline-none"
                       >
@@ -63,7 +104,7 @@ const calculateTotal = () => {
                       </button>
                     </div>
                     <button
-                      @click="removeItem(index)"
+                      @click="removeItem(item)"
                       class="ml-4 text-red-500 hover:text-red-700 focus:outline-none"
                     >
                       Remove

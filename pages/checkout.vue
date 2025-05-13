@@ -255,6 +255,8 @@ onMounted(() => {
   }
 });
 
+const auth = useAuthStore();
+
 // Function to handle form submission (authorize only)
 const handleSubmit = async () => {
   if (!stripe.value || !elements.value) {
@@ -289,6 +291,9 @@ const handleSubmit = async () => {
         body: {
           paymentIntentId: paymentIntentId.value,
           ...testObj,
+        },
+        headers: {
+          authorization: auth.authtoken,
         },
       });
 

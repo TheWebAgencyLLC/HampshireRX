@@ -1,14 +1,42 @@
 <script setup lang="ts">
+import { useAuthStore } from "~/stores/useAuthStore";
+
 definePageMeta({
   middleware: "user",
 });
+
+//types
+
+type Order = {
+  _id: string;
+  dateOrdered: string;
+  total: number;
+  status: string;
+  items: {
+    name: string;
+    quantity: number;
+    price: number;
+  }[];
+};
+
+const auth = useAuthStore();
+
 const { data } = await useFetch("/api/user/profile", {
   method: "GET",
   key: "user-profile",
   server: true,
 });
+const { data: orderData } = await useFetch<Order[]>("/api/orders/customer", {
+  method: "GET",
+  key: "orders",
+  server: true,
+  headers: {
+    Authorization: auth.authtoken,
+  },
+});
 
-console.log(data);
+console.log(data.value);
+console.log(orderData.value);
 
 // Placeholder user data
 const userData = ref({
@@ -121,7 +149,7 @@ const toggleOrderDetails = (orderId) => {
         <div class="lg:col-span-1">
           <div class="bg-white shadow rounded-lg overflow-hidden">
             <div
-              class="bg-gradient-to-r from-indigo-600 to-indigo-700 px-6 py-4"
+              class="bg-gradient-to-r from-pharmaBlue-400 to-indigo-600 px-6 py-4"
             >
               <div class="flex items-center justify-between">
                 <h2 class="text-xl font-semibold text-white">
@@ -320,7 +348,7 @@ const toggleOrderDetails = (orderId) => {
         <div class="lg:col-span-2">
           <div class="bg-white shadow rounded-lg overflow-hidden">
             <div
-              class="bg-gradient-to-r from-indigo-600 to-indigo-700 px-6 py-4"
+              class="bg-gradient-to-r from-indigo-600 to-pharmaBlue-400 px-6 py-4"
             >
               <h2 class="text-xl font-semibold text-white">Order History</h2>
             </div>
@@ -332,13 +360,13 @@ const toggleOrderDetails = (orderId) => {
 
               <div v-else class="space-y-6">
                 <div
-                  v-for="order in orderHistory"
-                  :key="order.id"
+                  v-for="order in orderData"
+                  :key="order._id"
                   class="bg-gray-50 rounded-lg overflow-hidden"
                 >
                   <div
                     class="px-6 py-4 flex flex-wrap items-center justify-between cursor-pointer"
-                    @click="toggleOrderDetails(order.id)"
+                    @click="toggleOrderDetails(order._id)"
                   >
                     <div
                       class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-8 mb-2 sm:mb-0"
@@ -348,7 +376,7 @@ const toggleOrderDetails = (orderId) => {
                           >Order ID:</span
                         >
                         <span class="ml-2 text-sm text-gray-900">{{
-                          order.id
+                          order._id
                         }}</span>
                       </div>
                       <div>
@@ -356,7 +384,7 @@ const toggleOrderDetails = (orderId) => {
                           >Date:</span
                         >
                         <span class="ml-2 text-sm text-gray-900">{{
-                          formatDate(order.date)
+                          formatDate(order.dateOrdered)
                         }}</span>
                       </div>
                     </div>
@@ -440,7 +468,7 @@ const toggleOrderDetails = (orderId) => {
                             <td
                               class="px-4 py-2 whitespace-nowrap text-sm text-gray-900"
                             >
-                              {{ item.name }}
+                              {{ item.medication.name }}
                             </td>
                             <td
                               class="px-4 py-2 whitespace-nowrap text-sm text-gray-900"
@@ -450,7 +478,11 @@ const toggleOrderDetails = (orderId) => {
                             <td
                               class="px-4 py-2 whitespace-nowrap text-sm text-gray-900 text-right"
                             >
-                              {{ formatCurrency(item.price) }}
+                              {{
+                                formatCurrency(
+                                  item.medication.price * item.quantity,
+                                )
+                              }}
                             </td>
                           </tr>
                         </tbody>
