@@ -74,7 +74,30 @@
             </div>
           </NuxtLink>
           <!-- Add this to your LayoutAppHeader.vue file -->
+
+          <NuxtLink
+            v-if="!isLoggedIn"
+            to="/login"
+            class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5 mr-1.5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
+              />
+            </svg>
+            Login
+          </NuxtLink>
           <button
+            v-if="isLoggedIn"
             @click="useLogout"
             class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors"
           >
@@ -268,11 +291,14 @@
 import { ref } from "vue";
 import { useRoute } from "vue-router";
 import { useCartStore } from "~/composables/useCartStore";
+import { useCheckAuth } from "~/composables/useCheckAuth.js";
 
 const gtm = useGTM();
 const route = useRoute();
 const currentRoute = route.path;
 const isMobileMenuOpen = ref(false);
+const { isLoggedIn } = await useCheckAuth();
+console.log(isLoggedIn.value);
 
 const navigationLinks = [
   { name: "Home", to: "/" },
