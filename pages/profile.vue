@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { useAuthStore } from "~/stores/useAuthStore";
+// Import the toast component
+import ToastNotification from "~/components/ToastNotification.vue";
 
 definePageMeta({
   middleware: "user",
@@ -38,6 +40,12 @@ const { data: orderData } = await useFetch<Order[]>("/api/orders/customer", {
 console.log(data.value);
 console.log(orderData.value);
 
+// Toast notification state
+const showToast = ref(false);
+const toastTitle = ref("");
+const toastMessage = ref("");
+const toastType = ref<'success' | 'error'>('success');
+
 // Placeholder user data
 const userData = ref({
   email: data.value.email,
@@ -56,7 +64,7 @@ const userData = ref({
 
 const submitChanges = async () => {
   try {
-    const res = $fetch("/api/user/update", {
+    const res = await $fetch("/api/user/update", {
       method: "POST",
       body: {
         email: editedUser.value.email,
@@ -67,11 +75,30 @@ const submitChanges = async () => {
         phone: editedUser.value.phone,
       },
     });
+    
     await refreshNuxtData("user-profile");
     isEditing.value = false;
+    
+    // Show success toast
+    toastTitle.value = "Profile Updated";
+    toastMessage.value = "Your profile has been updated successfully!";
+    toastType.value = "success";
+    showToast.value = true;
+    
   } catch (err) {
     console.log(err);
+    
+    // Show error toast
+    toastTitle.value = "Update Failed";
+    toastMessage.value = "Failed to update profile. Please try again.";
+    toastType.value = "error";
+    showToast.value = true;
   }
+};
+
+// Handle toast close
+const onToastClose = () => {
+  showToast.value = false;
 };
 
 // Editing state management
@@ -81,6 +108,10 @@ const editedUser = ref({ ...userData.value });
 // Toggle edit mode
 const toggleEdit = () => {
   isEditing.value = !isEditing.value;
+  // Reset edited user data when canceling edit
+  if (!isEditing.value) {
+    editedUser.value = { ...userData.value };
+  }
 };
 
 // Order history placeholder data
@@ -331,10 +362,16 @@ const toggleOrderDetails = (orderId) => {
                   </div>
                 </div>
 
-                <div class="pt-4 flex justify-end">
+                <div class="pt-4 flex justify-end gap-3">
+                  <button
+                    @click="toggleEdit"
+                    class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+                  >
+                    Cancel
+                  </button>
                   <button
                     @click="submitChanges"
-                    class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition-colors"
+                    class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition-colors font-medium"
                   >
                     Save Changes
                   </button>
@@ -502,6 +539,8 @@ const toggleOrderDetails = (orderId) => {
                           </tr>
                         </tfoot>
                       </table>
+
+                      <h4 class="mt-4 text-pharmaBlue-400">Any questions for us? Please contact us at (847) 683-2244</h4>
                     </div>
                   </div>
                 </div>
@@ -511,6 +550,16 @@ const toggleOrderDetails = (orderId) => {
         </div>
       </div>
     </div>
+    
+    <!-- Toast Notification -->
+    <ToastNotification
+      v-if="showToast"
+      :title="toastTitle"
+      :message="toastMessage"
+      :type="toastType"
+      @close="onToastClose"
+    />
+    
     <LayoutAppFooter />
   </div>
 </template>

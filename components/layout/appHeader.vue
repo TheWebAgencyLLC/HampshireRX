@@ -55,17 +55,14 @@
           >
             Prescription Transfer
           </a>
-          <NuxtLink
-            v-if="currentRoute !== '/profile'"
-            to="/profile"
-            @click="handleNavClick('profile', '/profile')"
-            class="text-black hover:text-orange-500 transition-colors duration-200 relative"
-          >
-            Profile
-          </NuxtLink>
 
+          <!-- Animated Cart Icon -->
           <NuxtLink to="/cart" class="relative">
-            Cart
+            <img 
+              :src="isCartAnimating ? '/images/icons8-cart.gif' : '/images/icons8-cart-24.png'" 
+              alt="Shopping Cart"
+              :key="cartIconKey"
+            >
             <div
               v-if="cartCount > 0"
               class="absolute -top-3 -right-4 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"
@@ -73,50 +70,127 @@
               {{ cartCount }}
             </div>
           </NuxtLink>
-          <!-- Add this to your LayoutAppHeader.vue file -->
 
-          <NuxtLink
-            v-if="!isLoggedIn"
-            to="/login"
-            class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5 mr-1.5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="2"
+          <!-- User Dropdown -->
+          <div class="relative" ref="userDropdown">
+            <!-- Login Link (when not logged in) -->
+            <NuxtLink
+              v-if="!isLoggedIn"
+              to="/login"
+              class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors"
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
-              />
-            </svg>
-            Login
-          </NuxtLink>
-          <button
-            v-if="isLoggedIn"
-            @click="useLogout"
-            class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5 mr-1.5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="2"
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 mr-1.5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
+                />
+              </svg>
+              Login
+            </NuxtLink>
+
+            <!-- User Dropdown Button (when logged in) -->
+            <button
+              v-if="isLoggedIn"
+              @click="toggleUserDropdown"
+              class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors"
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-              />
-            </svg>
-            Logout
-          </button>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 mr-1.5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                />
+              </svg>
+              Hi, {{ userName || 'User' }}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4 ml-1 transition-transform duration-200"
+                :class="{ 'rotate-180': isUserDropdownOpen }"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+
+            <!-- Dropdown Menu -->
+            <Transition
+              enter-active-class="transition ease-out duration-100"
+              enter-from-class="transform opacity-0 scale-95"
+              enter-to-class="transform opacity-100 scale-100"
+              leave-active-class="transition ease-in duration-75"
+              leave-from-class="transform opacity-100 scale-100"
+              leave-to-class="transform opacity-0 scale-95"
+            >
+              <div
+                v-if="isLoggedIn && isUserDropdownOpen"
+                class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 ring-1 ring-black ring-opacity-5"
+              >
+                <NuxtLink
+                  to="/profile"
+                  @click="handleNavClick('Profile', '/profile')"
+                  class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-4 w-4 mr-2"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                    />
+                  </svg>
+                  Profile
+                </NuxtLink>
+                <button
+                  @click="handleLogout"
+                  class="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors text-left"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-4 w-4 mr-2"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                    />
+                  </svg>
+                  Logout
+                </button>
+              </div>
+            </Transition>
+          </div>
 
           <NuxtLink
             to="https://www.facebook.com/HampshirePharmacy/"
@@ -194,7 +268,6 @@
         </button>
 
         <div class="p-6">
-          <!-- Changed to consistent padding all around -->
           <NuxtLink to="/" @click="handleNavClick('Home', '/')" class="block">
             <img
               src="~/public/images/logos/primaryWideLogo.webp"
@@ -229,36 +302,18 @@
             </svg>
           </NuxtLink>
 
-          <!-- Profile Link - Updated Styling -->
-          <NuxtLink
-            to="/profile"
-            @click="handleNavClick('Profile', '/profile')"
-            class="py-4 text-gray-800 hover:text-pharmaBlue-400 text-lg font-medium transition-colors duration-200 flex items-center justify-between"
-          >
-            Profile
-            <svg
-              class="w-5 h-5"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
-          </NuxtLink>
-
-          <!-- Cart Link - Updated Styling -->
+          <!-- Cart Link -->
           <NuxtLink
             to="/cart"
             @click="handleNavClick('Cart', '/cart')"
             class="py-4 text-gray-800 hover:text-pharmaBlue-400 text-lg font-medium transition-colors duration-200 flex items-center justify-between"
           >
             <div class="flex items-center">
-              Cart
+              <img 
+                :src="isCartAnimating ? '/images/icons8-cart.gif' : '/images/icons8-cart-24.png'" 
+                alt="Shopping Cart"
+                :key="mobileCartIconKey"
+              >
               <div
                 v-if="cartCount > 0"
                 class="ml-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"
@@ -281,7 +336,57 @@
             </svg>
           </NuxtLink>
 
-          <!-- Login Link - Updated Styling -->
+          <!-- Mobile User Section -->
+          <div v-if="isLoggedIn" class="py-4">
+            <div class="text-gray-800 text-lg font-medium mb-2">
+              Hi, {{ userName || 'User' }}
+            </div>
+            <div class="ml-4 space-y-2">
+              <NuxtLink
+                to="/profile"
+                @click="handleNavClick('Profile', '/profile')"
+                class="block py-2 text-gray-600 hover:text-pharmaBlue-400 transition-colors duration-200 flex items-center"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4 mr-2"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                  />
+                </svg>
+                Profile
+              </NuxtLink>
+              <button
+                @click="handleLogout"
+                class="block py-2 text-gray-600 hover:text-pharmaBlue-400 transition-colors duration-200 flex items-center w-full text-left"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4 mr-2"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                  />
+                </svg>
+                Logout
+              </button>
+            </div>
+          </div>
+
+          <!-- Login Link for Mobile -->
           <NuxtLink
             v-if="!isLoggedIn"
             to="/login"
@@ -319,56 +424,16 @@
               />
             </svg>
           </NuxtLink>
-
-          <!-- Logout Button - Updated Styling -->
-          <button
-            v-if="isLoggedIn"
-            @click="useLogout"
-            class="py-4 text-gray-800 hover:text-pharmaBlue-400 text-lg font-medium transition-colors duration-200 flex items-center justify-between w-full text-left"
-          >
-            <div class="flex items-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5 mr-2"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-                />
-              </svg>
-              Logout
-            </div>
-            <svg
-              class="w-5 h-5"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
-          </button>
         </nav>
 
         <!-- Bottom Info Section -->
         <div class="p-4">
           <div class="mt-auto bg-gray-100 rounded-lg">
             <div class="p-8">
-              <!-- Increased padding -->
               <h2 class="text-2xl font-semibold text-gray-900 mb-3">
                 Send your patient's prescriptions to us.
               </h2>
               <p class="text-gray-600 mb-6">
-                <!-- Increased margin bottom -->
                 We offer best in class pharmacy fulfillment services to partners
                 of all sizes.
               </p>
@@ -383,7 +448,6 @@
                   fill="none"
                   stroke="currentColor"
                 >
-                  <!-- Diagonal up-right arrow -->
                   <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
@@ -417,7 +481,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch, onMounted, onUnmounted } from "vue";
 import { useRoute } from "vue-router";
 import { useCartStore } from "~/composables/useCartStore";
 import { useCheckAuth } from "~/composables/useCheckAuth.js";
@@ -426,8 +490,16 @@ const gtm = useGTM();
 const route = useRoute();
 const currentRoute = route.path;
 const isMobileMenuOpen = ref(false);
+const isUserDropdownOpen = ref(false);
+const userDropdown = ref(null);
 const { isLoggedIn } = await useCheckAuth();
-console.log(isLoggedIn.value);
+
+// This is a placeholder - replace with our actual user data from auth
+const userName = ref('');
+
+const isCartAnimating = ref(false);
+const cartIconKey = ref(0);
+const mobileCartIconKey = ref(0);
 
 const navigationLinks = [
   { name: "Home", to: "/" },
@@ -450,13 +522,62 @@ const trackNavigationInteraction = (linkName, navigatingTo, navigatingFrom) => {
 const handleNavClick = (linkName, navigatingTo) => {
   trackNavigationInteraction(linkName, navigatingTo, currentRoute);
   isMobileMenuOpen.value = false;
+  isUserDropdownOpen.value = false;
 };
 
 const toggleMobileMenu = () => {
   isMobileMenuOpen.value = !isMobileMenuOpen.value;
+  isUserDropdownOpen.value = false;
 };
 
+const toggleUserDropdown = () => {
+  isUserDropdownOpen.value = !isUserDropdownOpen.value;
+};
+
+const handleLogout = () => {
+  isUserDropdownOpen.value = false;
+  isMobileMenuOpen.value = false;
+  useLogout();
+};
+
+// Close dropdown when clicking outside
+const handleClickOutside = (event) => {
+  if (userDropdown.value && !userDropdown.value.contains(event.target)) {
+    isUserDropdownOpen.value = false;
+  }
+};
+
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside);
+});
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside);
+});
+
 const { cartCount } = useCartStore();
+
+// Function to trigger cart animation
+const triggerCartAnimation = () => {
+  isCartAnimating.value = true;
+  cartIconKey.value += 1;
+  mobileCartIconKey.value += 1;
+  
+  setTimeout(() => {
+    isCartAnimating.value = false;
+  }, 2000);
+};
+
+// Watch for cart count changes and trigger animation
+watch(cartCount, (newCount, oldCount) => {
+  if (newCount > oldCount) {
+    triggerCartAnimation();
+  }
+});
+
+// Expose the triggerCartAnimation function globally
+const { $triggerCartAnimation } = useNuxtApp();
+provide('triggerCartAnimation', triggerCartAnimation);
 </script>
 
 <style scoped>
