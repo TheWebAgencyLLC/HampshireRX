@@ -26,6 +26,7 @@ export default defineEventHandler(async (event) => {
       loggedIn: true,
       user: user.email as string,
       token: session.data.token, // Return the token from the session
+      name: user.firstName,
     };
   } catch (error: any) {
     return createError({
