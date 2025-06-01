@@ -24,7 +24,7 @@ const submitForm = async () => {
       },
     });
     if (res.loggedIn && res.token) {
-      auth.setAuth(res.token, res.user);
+      auth.setAuth(res.token, res.user, res.name);
       return navigateTo("/"); //if successful, redirect.
     }
   } catch (e: any) {
