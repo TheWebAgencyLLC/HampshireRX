@@ -17,6 +17,7 @@ const props = defineProps<{
     name: string;
     genericFor?: string;
     options: Option[];
+    canBeSold: boolean;
   };
 }>();
 
@@ -194,7 +195,7 @@ const price = computed(() => {
 
       <!-- Add to Cart Button -->
       <button
-        v
+        v-if="props.data.canBeSold"
         @click="addToCart"
         class="w-full flex items-center justify-center gap-3 px-6 py-3.5 bg-pharmaBlue-400 text-white text-sm font-semibold rounded-full hover:bg-pharmaBlue-500 transition-all duration-200 focus:outline-none focus:ring-3 focus:ring-pharmaBlue-300 focus:ring-offset-2 shadow-md hover:shadow-lg"
       >
