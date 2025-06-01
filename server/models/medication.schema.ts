@@ -14,5 +14,6 @@ export const medicationSchema = defineMongooseModel({
         price: "string",
       },
     ],
+    canBeSold: "boolean",
   },
 });
