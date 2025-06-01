@@ -58,11 +58,20 @@
 
           <!-- Animated Cart Icon -->
           <NuxtLink to="/cart" class="relative">
-            <img 
-              :src="isCartAnimating ? '/images/icons8-cart.gif' : '/images/icons8-cart-24.png'" 
-              alt="Shopping Cart"
-              :key="cartIconKey"
-            >
+            <ClientOnly>
+              <img
+                :src="
+                  isCartAnimating
+                    ? '/images/icons8-cart.gif'
+                    : '/images/icons8-cart-24.png'
+                "
+                alt="Shopping Cart"
+                :key="mobileCartIconKey"
+              />
+              <template #fallback>
+                <img src="/images/icons8-cart.gif" alt="Shopping Cart" />
+              </template>
+            </ClientOnly>
             <div
               v-if="cartCount > 0"
               class="absolute -top-3 -right-4 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"
@@ -116,7 +125,7 @@
                   d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
                 />
               </svg>
-              Hi, {{ userName || 'User' }}
+              Hi, {{ name || "User" }}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="h-4 w-4 ml-1 transition-transform duration-200"
@@ -309,11 +318,20 @@
             class="py-4 text-gray-800 hover:text-pharmaBlue-400 text-lg font-medium transition-colors duration-200 flex items-center justify-between"
           >
             <div class="flex items-center">
-              <img 
-                :src="isCartAnimating ? '/images/icons8-cart.gif' : '/images/icons8-cart-24.png'" 
-                alt="Shopping Cart"
-                :key="mobileCartIconKey"
-              >
+              <ClientOnly>
+                <img
+                  :src="
+                    isCartAnimating
+                      ? '/images/icons8-cart.gif'
+                      : '/images/icons8-cart-24.png'
+                  "
+                  alt="Shopping Cart"
+                  :key="mobileCartIconKey"
+                />
+                <template #fallback>
+                  <img src="/images/icons8-cart.gif" alt="Shopping Cart" />
+                </template>
+              </ClientOnly>
               <div
                 v-if="cartCount > 0"
                 class="ml-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"
@@ -339,7 +357,7 @@
           <!-- Mobile User Section -->
           <div v-if="isLoggedIn" class="py-4">
             <div class="text-gray-800 text-lg font-medium mb-2">
-              Hi, {{ userName || 'User' }}
+              Hi, {{ userName || "User" }}
             </div>
             <div class="ml-4 space-y-2">
               <NuxtLink
@@ -495,7 +513,7 @@ const userDropdown = ref(null);
 const { isLoggedIn } = await useCheckAuth();
 
 // This is a placeholder - replace with our actual user data from auth
-const userName = ref('');
+const { name } = useAuthStore();
 
 const isCartAnimating = ref(false);
 const cartIconKey = ref(0);
@@ -548,11 +566,11 @@ const handleClickOutside = (event) => {
 };
 
 onMounted(() => {
-  document.addEventListener('click', handleClickOutside);
+  document.addEventListener("click", handleClickOutside);
 });
 
 onUnmounted(() => {
-  document.removeEventListener('click', handleClickOutside);
+  document.removeEventListener("click", handleClickOutside);
 });
 
 const { cartCount } = useCartStore();
@@ -562,7 +580,7 @@ const triggerCartAnimation = () => {
   isCartAnimating.value = true;
   cartIconKey.value += 1;
   mobileCartIconKey.value += 1;
-  
+
   setTimeout(() => {
     isCartAnimating.value = false;
   }, 2000);
@@ -577,7 +595,7 @@ watch(cartCount, (newCount, oldCount) => {
 
 // Expose the triggerCartAnimation function globally
 const { $triggerCartAnimation } = useNuxtApp();
-provide('triggerCartAnimation', triggerCartAnimation);
+provide("triggerCartAnimation", triggerCartAnimation);
 </script>
 
 <style scoped>
