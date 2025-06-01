@@ -4,10 +4,12 @@ export const useAuthStore = defineStore(
     const userEmail = ref<string | undefined>(undefined);
     const authtoken = ref<string | undefined>(undefined);
     const isLoggedIn = computed(() => !!authtoken.value);
+    const name = ref<string | undefined>(undefined);
 
-    function setAuth(token: string, email: string) {
+    function setAuth(token: string, email: string, userName: string) {
       authtoken.value = token;
       userEmail.value = email;
+      name.value = userName;
     }
 
     function clearAuth() {
@@ -19,6 +21,7 @@ export const useAuthStore = defineStore(
       userEmail,
       authtoken,
       isLoggedIn,
+      name,
       setAuth,
       clearAuth,
     };
