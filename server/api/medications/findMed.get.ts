@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
       }
     }
     return await medicationSchema.find(filter);
-  } catch (error) {
+  } catch (error: any) {
     return {
       statusCode: 500,
       body: { message: "Error fetching meds", error: error.message },
