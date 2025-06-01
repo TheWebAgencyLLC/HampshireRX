@@ -44,7 +44,7 @@ console.log(orderData.value);
 const showToast = ref(false);
 const toastTitle = ref("");
 const toastMessage = ref("");
-const toastType = ref<'success' | 'error'>('success');
+const toastType = ref<"success" | "error">("success");
 
 // Placeholder user data
 const userData = ref({
@@ -75,19 +75,18 @@ const submitChanges = async () => {
         phone: editedUser.value.phone,
       },
     });
-    
+
     await refreshNuxtData("user-profile");
     isEditing.value = false;
-    
+
     // Show success toast
     toastTitle.value = "Profile Updated";
     toastMessage.value = "Your profile has been updated successfully!";
     toastType.value = "success";
     showToast.value = true;
-    
   } catch (err) {
     console.log(err);
-    
+
     // Show error toast
     toastTitle.value = "Update Failed";
     toastMessage.value = "Failed to update profile. Please try again.";
@@ -247,7 +246,7 @@ const toggleOrderDetails = (orderId) => {
                     Date of Birth
                   </h3>
                   <p class="mt-1 text-sm text-gray-900">
-                    {{ formatDate(userData.DOB) }}
+                    <NuxtTime :datetime="formatDate(userData.DOB)"></NuxtTime>
                   </p>
                 </div>
 
@@ -540,7 +539,10 @@ const toggleOrderDetails = (orderId) => {
                         </tfoot>
                       </table>
 
-                      <h4 class="mt-4 text-pharmaBlue-400">Any questions for us? Please contact us at (847) 683-2244</h4>
+                      <h4 class="mt-4 text-pharmaBlue-400">
+                        Any questions for us? Please contact us at (847)
+                        683-2244
+                      </h4>
                     </div>
                   </div>
                 </div>
@@ -550,7 +552,7 @@ const toggleOrderDetails = (orderId) => {
         </div>
       </div>
     </div>
-    
+
     <!-- Toast Notification -->
     <ToastNotification
       v-if="showToast"
@@ -559,7 +561,7 @@ const toggleOrderDetails = (orderId) => {
       :type="toastType"
       @close="onToastClose"
     />
-    
+
     <LayoutAppFooter />
   </div>
 </template>
