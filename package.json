@@ -20,7 +20,7 @@
     "bcryptjs": "^2.4.3",
     "gsap": "^3.12.5",
     "jsonwebtoken": "^9.0.2",
-    "nuxt": "^3.17.3",
+    "nuxt": "^3.17.4",
     "pinia": "^3.0.2",
     "pinia-plugin-persistedstate": "^4.3.0",
     "vue": "^3.5.13"
