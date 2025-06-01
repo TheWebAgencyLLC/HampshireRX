@@ -296,6 +296,7 @@ const handleSubmit = async () => {
           authorization: auth.authtoken,
         },
       });
+      navigateTo("/profile");
 
       // Redirect to order confirmation page after a short delay
       // setTimeout(() => {
