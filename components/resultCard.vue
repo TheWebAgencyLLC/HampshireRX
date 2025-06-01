@@ -31,7 +31,7 @@ const selectedCount = ref<{ count: number; countUnit: string } | null>(null);
 const showToast = ref(false);
 const toastTitle = ref("");
 const toastMessage = ref("");
-const toastType = ref<'success' | 'error'>('success');
+const toastType = ref<"success" | "error">("success");
 
 const sizes: string[] = [];
 const quantity: { count: number; countUnit: string }[] = [];
@@ -118,37 +118,39 @@ async function addToCart() {
     },
     quantity: 1,
   };
-  
+
   try {
     const res = await $fetch("/api/user/update-cart", {
       method: "POST",
       body: { item },
     });
     console.log(res);
-    
+
     // Fix the undefined cart issue
     if (res && res.cart && Array.isArray(res.cart)) {
       const previousCount = store.count || 0;
       //@ts-ignore
       store.setCount(res.cart.length);
-      
+
       // Show success toast
       toastTitle.value = "Added to Cart";
       toastMessage.value = `${props.data.name} (${selectedCount.value?.count} ${selectedCount.value?.countUnit}) added to cart`;
       toastType.value = "success";
       showToast.value = true;
-      
+
       // Only trigger cart animation if count actually increased
       if (res.cart.length > previousCount) {
         // Use setTimeout to ensure the animation is triggered after DOM updates
         setTimeout(() => {
-          window.dispatchEvent(new CustomEvent('cart-item-added', {
-            detail: { newCount: res.cart.length, previousCount }
-          }));
+          window.dispatchEvent(
+            new CustomEvent("cart-item-added", {
+              detail: { newCount: res.cart.length, previousCount },
+            }),
+          );
         }, 100);
       }
     } else {
-      console.error('Invalid cart response:', res);
+      console.error("Invalid cart response:", res);
       // Show error toast
       toastTitle.value = "Error";
       toastMessage.value = "Failed to add item to cart. Please try again.";
@@ -184,18 +186,24 @@ const price = computed(() => {
     <div class="p-6 bg-white">
       <h2 class="text-xl font-bold text-gray-900 mb-2">{{ name }}</h2>
       <div class="text-sm text-gray-500 mb-6">
-        Generic For: <span class="font-medium text-gray-700">{{ genericFor || 'N/A' }}</span>
+        Generic For:
+        <span class="font-medium text-gray-700">{{
+          options[0].genericFor || "N/A"
+        }}</span>
       </div>
-      
+
       <!-- Add to Cart Button -->
-      <button 
+      <button
+        v
         @click="addToCart"
         class="w-full flex items-center justify-center gap-3 px-6 py-3.5 bg-pharmaBlue-400 text-white text-sm font-semibold rounded-full hover:bg-pharmaBlue-500 transition-all duration-200 focus:outline-none focus:ring-3 focus:ring-pharmaBlue-300 focus:ring-offset-2 shadow-md hover:shadow-lg"
       >
-        <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center flex-shrink-0">
-          <img 
-            src="/public/images/icons8-cart-24.png" 
-            alt="Cart" 
+        <div
+          class="w-6 h-6 bg-white rounded-full flex items-center justify-center flex-shrink-0"
+        >
+          <img
+            src="/public/images/icons8-cart-24.png"
+            alt="Cart"
             class="w-4 h-4"
           />
         </div>
@@ -208,7 +216,9 @@ const price = computed(() => {
       <div class="flex gap-4 mb-6">
         <!-- Strength Dropdown -->
         <div class="flex-shrink-0 w-32">
-          <label class="block text-sm font-medium text-gray-700 mb-2">Strength</label>
+          <label class="block text-sm font-medium text-gray-700 mb-2"
+            >Strength</label
+          >
           <select
             v-model="selectedSize"
             class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg bg-white cursor-pointer hover:border-pharmaBlue-300 focus:border-pharmaBlue-400 focus:ring-2 focus:ring-pharmaBlue-100 transition-colors"
@@ -220,7 +230,9 @@ const price = computed(() => {
 
         <!-- Quantity Dropdown -->
         <div class="flex-1">
-          <label class="block text-sm font-medium text-gray-700 mb-2">Quantity</label>
+          <label class="block text-sm font-medium text-gray-700 mb-2"
+            >Quantity</label
+          >
           <select
             v-model="selectedCount"
             class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg bg-white cursor-pointer hover:border-pharmaBlue-300 focus:border-pharmaBlue-400 focus:ring-2 focus:ring-pharmaBlue-100 transition-colors"
@@ -238,19 +250,21 @@ const price = computed(() => {
       </div>
 
       <!-- Price Display -->
-      <div class="bg-gradient-to-r from-orange-50 to-amber-50 border border-orange-200 px-4 py-4 rounded-lg">
+      <div
+        class="bg-gradient-to-r from-orange-50 to-amber-50 border border-orange-200 px-4 py-4 rounded-lg"
+      >
         <div class="flex items-center justify-between">
           <span class="text-sm font-medium text-gray-700">Price</span>
-          <span class="text-2xl font-bold text-orange-600">
-            ${{ price }}
-          </span>
+          <span class="text-2xl font-bold text-orange-600"> ${{ price }} </span>
         </div>
       </div>
     </div>
 
     <!-- Transfer Prescription Button -->
     <NuxtLink to="/transfer-prescription">
-      <div class="w-full text-center bg-pharmaBlue-400 text-white py-4 font-semibold hover:bg-pharmaBlue-500 transition-colors duration-200 border-t border-pharmaBlue-200">
+      <div
+        class="w-full text-center bg-pharmaBlue-400 text-white py-4 font-semibold hover:bg-pharmaBlue-500 transition-colors duration-200 border-t border-pharmaBlue-200"
+      >
         Transfer Prescription
       </div>
     </NuxtLink>
