@@ -9,11 +9,13 @@ const authForm = reactive({
   password: "",
 });
 
+const route = useRoute();
+console.log(route.query.redirect);
+
 //error text
 const errorText = ref(undefined);
 
 //submit login
-
 const submitForm = async () => {
   try {
     const res = await $fetch("/api/auth/login", {
@@ -23,12 +25,31 @@ const submitForm = async () => {
         password: authForm.password,
       },
     });
+
     if (res.loggedIn && res.token) {
       auth.setAuth(res.token, res.user, res.name);
-      return navigateTo("/"); //if successful, redirect.
+
+      if (route.query.redirect) {
+        // Handle redirect properly
+        const redirectPath = Array.isArray(route.query.redirect)
+          ? route.query.redirect[0]
+          : route.query.redirect;
+
+        // Decode the redirect path in case it has encoded characters
+        const decodedPath = decodeURIComponent(redirectPath);
+
+        // Ensure the path starts with / and avoid double slashes
+        const normalizedPath = decodedPath.startsWith("/")
+          ? decodedPath
+          : `/${decodedPath}`;
+
+        return await navigateTo(normalizedPath);
+      }
+
+      return await navigateTo("/");
     }
   } catch (e: any) {
-    errorText.value = e.statusMessage; //update error text
+    errorText.value = e.statusMessage;
   }
 };
 </script>
@@ -39,11 +60,36 @@ const submitForm = async () => {
       <div
         class="flex w-full max-w-4xl bg-white rounded-lg shadow-xl overflow-hidden"
       >
-         <div class="w-1/2 bg-cover bg-center hidden md:block"
-        style="background-image: url('/images/pharmacistLogin.png');">
-      </div>
+        <div
+          class="w-1/2 bg-cover bg-center hidden md:block"
+          style="background-image: url(&quot;/images/pharmacistLogin.png&quot;)"
+        ></div>
 
         <div class="w-full md:w-1/2 p-8">
+          <!-- Return to Home Button -->
+          <div class="mb-6">
+            <a
+              href="/"
+              class="inline-flex items-center text-sm text-gray-600 hover:text-indigo-600 transition-colors"
+            >
+              <svg
+                class="w-4 h-4 mr-1"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                ></path>
+              </svg>
+              Return to Home
+            </a>
+          </div>
+
           <div class="mb-8">
             <h1 class="text-3xl font-bold text-gray-900 mb-2">Welcome Back</h1>
             <p class="text-gray-600">Sign in to access your account</p>
@@ -116,7 +162,7 @@ const submitForm = async () => {
                 <p class="text-sm text-gray-600">
                   Don't have an account?
                   <NuxtLink
-                    to="/signup"
+                    :to="`/signup?redirect=${route.query.redirect ? route.query.redirect : '/signup'}`"
                     class="text-indigo-600 hover:text-indigo-500 font-medium"
                   >
                     Sign up

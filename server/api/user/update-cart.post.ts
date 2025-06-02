@@ -30,7 +30,8 @@ export default defineEventHandler(async (event) => {
         cartItem.medication.name === item.medication.name &&
         cartItem.medication.count === item.medication.count &&
         cartItem.medication.countUnit === item.medication.countUnit &&
-        cartItem.medication.price === item.medication.price,
+        cartItem.medication.price === item.medication.price &&
+        cartItem.medication.size === item.medication.size,
     );
 
     let updatedUser;

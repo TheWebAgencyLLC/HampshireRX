@@ -29,6 +29,7 @@ export const userSchema = defineMongooseModel({
           count: { type: Number, required: true },
           countUnit: { type: String, required: true },
           price: { type: Number, required: true },
+          size: { type: String, required: false },
         },
         quantity: {
           type: Number,

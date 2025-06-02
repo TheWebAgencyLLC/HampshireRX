@@ -85,7 +85,7 @@
             <!-- Login Link (when not logged in) -->
             <NuxtLink
               v-if="!isLoggedIn"
-              to="/login"
+              :to="`/login?redirect=${currentRoute}`"
               class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors"
             >
               <svg
@@ -357,7 +357,7 @@
           <!-- Mobile User Section -->
           <div v-if="isLoggedIn" class="py-4">
             <div class="text-gray-800 text-lg font-medium mb-2">
-              Hi, {{ userName || "User" }}
+              Hi, {{ name || "User" }}
             </div>
             <div class="ml-4 space-y-2">
               <NuxtLink
@@ -407,7 +407,7 @@
           <!-- Login Link for Mobile -->
           <NuxtLink
             v-if="!isLoggedIn"
-            to="/login"
+            :to="`/login?redirect=${currentRoute}`"
             @click="handleNavClick('Login', '/login')"
             class="py-4 text-gray-800 hover:text-pharmaBlue-400 text-lg font-medium transition-colors duration-200 flex items-center justify-between"
           >

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 // State variables for form data
 import { useLogin } from "~/composables/useLogin";
+import { useAuthStore } from "~/stores/useAuthStore";
 
 const signupForm = reactive({
   email: "",
@@ -16,6 +17,8 @@ const signupForm = reactive({
     zipCode: "",
   },
 });
+
+const route = useRoute();
 
 const errorMessage = ref<string | undefined>(undefined);
 
@@ -38,6 +41,8 @@ const prevStep = () => {
   }
 };
 
+const auth = useAuthStore();
+
 // Progress percentage calculation
 const progressPercentage = computed(() => {
   return ((currentStep.value - 1) / (totalSteps - 1)) * 100;
@@ -52,7 +57,37 @@ async function handleSignup() {
     //@ts-ignore
     if (res.registered) {
       errorMessage.value = "";
-      await useLogin(signupForm.email, signupForm.password);
+      try {
+        const loginRes = await $fetch("/api/auth/login", {
+          method: "POST",
+          body: {
+            email: signupForm.email,
+            password: signupForm.password,
+          },
+        });
+        if (loginRes.loggedIn && loginRes.token) {
+          auth.setAuth(loginRes.token, loginRes.user, loginRes.name);
+          if (route.query.redirect) {
+            // Handle redirect properly
+            const redirectPath = Array.isArray(route.query.redirect)
+              ? route.query.redirect[0]
+              : route.query.redirect;
+
+            // Decode the redirect path in case it has encoded characters
+            const decodedPath = decodeURIComponent(redirectPath);
+
+            // Ensure the path starts with / and avoid double slashes
+            const normalizedPath = decodedPath.startsWith("/")
+              ? decodedPath
+              : `/${decodedPath}`;
+
+            return await navigateTo(normalizedPath);
+          }
+          return navigateTo("/"); //if successful, redirect.
+        }
+      } catch (e: any) {
+        errorMessage.value = e.statusMessage; //update error text
+      }
     }
   } catch (e: any) {
     if (e.statusCode == "409") {
@@ -79,6 +114,28 @@ async function handleSignup() {
         </div>
 
         <div class="p-8">
+          <div class="mb-6">
+            <a
+              href="/"
+              class="inline-flex items-center text-sm text-gray-600 hover:text-indigo-600 transition-colors"
+            >
+              <svg
+                class="w-4 h-4 mr-1"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                ></path>
+              </svg>
+              Return to Home
+            </a>
+          </div>
           <div class="mb-8">
             <h1 class="text-3xl font-bold text-gray-900 mb-2">
               Create Your Account
