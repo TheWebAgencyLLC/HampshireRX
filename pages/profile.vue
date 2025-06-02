@@ -314,7 +314,7 @@ const toggleOrderDetails = (orderId) => {
                     type="date"
                     v-model="editedUser.DOB"
                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                  />
+                />
                 </div>
 
                 <div>
@@ -390,10 +390,27 @@ const toggleOrderDetails = (orderId) => {
             </div>
 
             <div class="p-6">
-              <div v-if="orderHistory.length === 0" class="text-center py-8">
-                <p class="text-gray-500">You haven't placed any orders yet.</p>
+              <!-- No Orders View -->
+              <div v-if="!orderData || orderData.length === 0" class="text-center py-12">
+                <div class="flex justify-center mb-6">
+                  <img 
+                    src="/images/noOrdersView.png" 
+                    alt="No orders illustration" 
+                    class="max-w-xs w-full h-auto border border-pharmaBlue-400"
+                  />
+                </div>
+                <p class="text-gray-500 mb-6">
+                  You haven't placed any orders yet. Start browsing our products to place your first order!
+                </p>
+                <NuxtLink 
+                  to="/products" 
+                  class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white font-medium rounded-md hover:bg-indigo-700 transition-colors"
+                >
+                  Browse Products
+                </NuxtLink>
               </div>
 
+              <!-- Orders List -->
               <div v-else class="space-y-6">
                 <div
                   v-for="order in orderData"
@@ -454,7 +471,7 @@ const toggleOrderDetails = (orderId) => {
                         xmlns="http://www.w3.org/2000/svg"
                         :class="[
                           'h-5 w-5 text-gray-400 ml-4 transform transition-transform',
-                          expandedOrder === order.id ? 'rotate-180' : '',
+                          expandedOrder === order._id ? 'rotate-180' : '',
                         ]"
                         viewBox="0 0 20 20"
                         fill="currentColor"
@@ -469,7 +486,7 @@ const toggleOrderDetails = (orderId) => {
                   </div>
 
                   <div
-                    v-if="expandedOrder === order.id"
+                    v-if="expandedOrder === order._id"
                     class="px-6 py-4 border-t border-gray-200"
                   >
                     <h4 class="text-sm font-medium text-gray-500 mb-3">

@@ -39,12 +39,9 @@ const submitForm = async () => {
       <div
         class="flex w-full max-w-4xl bg-white rounded-lg shadow-xl overflow-hidden"
       >
-        <div
-          class="w-1/2 bg-cover bg-center hidden md:block"
-          style="
-            background-image: url(&quot;/images/undraw_automobile_repair_ywci.webp&quot;);
-          "
-        ></div>
+         <div class="w-1/2 bg-cover bg-center hidden md:block"
+        style="background-image: url('/images/pharmacistLogin.png');">
+      </div>
 
         <div class="w-full md:w-1/2 p-8">
           <div class="mb-8">

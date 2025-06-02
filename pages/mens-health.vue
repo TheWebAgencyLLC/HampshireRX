@@ -25,7 +25,7 @@
     </div>
 
     <!-- Navigation and Banner Components -->
-    <MedLandingNavigation />
+    <LayoutAppHeader />
     <DiscountBanner />
 
     <div
@@ -36,184 +36,178 @@
 
         <div class="flex flex-col md:flex-row justify-center gap-4">
           <!-- Sildenafil Card -->
-          <div
-            class="w-full md:max-w-xl bg-white/95 rounded-xl shadow-lg p-6 backdrop-blur-sm"
-          >
-            <div class="flex items-center gap-4 mb-6">
-              <div
-                class="w-12 h-12 bg-pharmaBlue-400 rounded-full flex items-center justify-center"
-              >
-                <svg
-                  class="w-6 h-6 text-white"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                >
-                  <rect
-                    x="3"
-                    y="8"
-                    width="18"
-                    height="8"
-                    rx="4"
-                    stroke-width="2"
-                  />
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M12 8v8"
-                  />
-                </svg>
-              </div>
-              <div>
-                <h3 class="text-xl font-bold text-gray-800">Sildenafil</h3>
-                <p class="text-gray-600">Generic For: Viagra</p>
-              </div>
-            </div>
-            <!-- Generic Price Display -->
-            <div class="grid grid-cols-2 gap-4 mb-4">
-              <div class="border border-gray-200 rounded-lg p-4 bg-green-50">
-                <span class="text-sm text-gray-500">Our Generic Price</span>
-                <div class="font-bold text-green-600">
-                  ${{ currentPriceMedOne }}
-                </div>
-              </div>
-            </div>
-            <!-- Dosage Options (Unique Sizes) -->
-            <div class="mb-4">
-              <h4 class="mb-2 font-bold text-gray-700">Select Dosage</h4>
-              <div class="flex gap-2">
-                <button
-                  v-for="dosage in sildDosages"
-                  :key="dosage"
-                  @click="selectedSildDosage = dosage"
-                  :class="
-                    selectedSildDosage === dosage
-                      ? 'px-4 py-2 bg-pharmaBlue-400 text-white rounded'
-                      : 'px-4 py-2 border border-gray-300 rounded hover:bg-gray-50'
-                  "
-                >
-                  {{ dosage }}
-                </button>
-              </div>
-            </div>
-            <!-- Package Size Options (Filtered by Dosage) -->
-            <div class="mb-4" v-if="sildPackageSizes.length">
-              <h4 class="mb-2 font-bold text-gray-700">Select Package Size</h4>
-              <div class="flex gap-2">
-                <button
-                  v-for="pkg in sildPackageSizes"
-                  :key="pkg.count + pkg.countUnit"
-                  @click="selectedSildPackage = pkg"
-                  :class="
-                    selectedSildPackage &&
-                    selectedSildPackage.count === pkg.count &&
-                    selectedSildPackage.countUnit === pkg.countUnit
-                      ? 'px-4 py-2 bg-pharmaBlue-400 text-white rounded'
-                      : 'px-4 py-2 border border-gray-300 rounded hover:bg-gray-50'
-                  "
-                >
-                  {{ pkg.count }}{{ pkg.countUnit }}
-                </button>
-              </div>
-            </div>
-            <a href="/transfer-prescription">
-              <button
-                class="w-full mt-4 bg-pharmaBlue-400 text-white py-3 rounded-md hover:bg-opacity-90 transition"
-              >
-                Transfer Your Prescription Now
-              </button>
-            </a>
-          </div>
+<div class="w-full md:max-w-xl bg-white/95 rounded-xl shadow-lg p-6 backdrop-blur-sm">
+  <div class="flex items-center gap-4 mb-6">
+    <div class="w-12 h-12 bg-pharmaBlue-400 rounded-full flex items-center justify-center">
+      <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
+        <rect x="3" y="8" width="18" height="8" rx="4" stroke-width="2" />
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v8" />
+      </svg>
+    </div>
+    <div>
+      <h3 class="text-xl font-bold text-gray-800">Sildenafil</h3>
+      <p class="text-gray-600">Generic For: Viagra</p>
+    </div>
+  </div>
+  
+  <!-- Generic Price Display -->
+  <div class="grid grid-cols-2 gap-4 mb-4">
+    <div class="border border-gray-200 rounded-lg p-4 bg-green-50">
+      <span class="text-sm text-gray-500">Our Generic Price</span>
+      <div class="font-bold text-green-600">
+        ${{ currentPriceMedOne }}
+      </div>
+    </div>
+  </div>
+  
+  <!-- Dosage Options -->
+  <div class="mb-4">
+    <h4 class="mb-2 font-bold text-gray-700">Select Dosage</h4>
+    <div class="flex gap-2">
+      <button
+        v-for="dosage in sildDosages"
+        :key="dosage"
+        @click="selectedSildDosage = dosage"
+        :class="
+          selectedSildDosage === dosage
+            ? 'px-4 py-2 bg-pharmaBlue-400 text-white rounded'
+            : 'px-4 py-2 border border-gray-300 rounded hover:bg-gray-50'
+        "
+      >
+        {{ dosage }}
+      </button>
+    </div>
+  </div>
+  
+  <!-- Package Size Options -->
+  <div class="mb-4" v-if="sildPackageSizes.length">
+    <h4 class="mb-2 font-bold text-gray-700">Select Package Size</h4>
+    <div class="flex gap-2">
+      <button
+        v-for="pkg in tadPackageSizes"
+        :key="pkg.count + pkg.countUnit"
+        @click="selectedTadPackage = pkg"
+        :class="
+          selectedTadPackage &&
+          selectedTadPackage.count === pkg.count &&
+          selectedTadPackage.countUnit === pkg.countUnit
+            ? 'px-4 py-2 bg-pharmaBlue-400 text-white rounded'
+            : 'px-4 py-2 border border-gray-300 rounded hover:bg-gray-50'
+        "
+      >
+        {{ pkg.count }} {{ pkg.countUnit }}
+      </button>
+    </div>
+  </div>
+  
+  <!-- Action Buttons - Side by Side -->
+  <div class="flex gap-3 mt-4">
+    <button
+      @click="addToCart('sildenafil')"
+      class="flex-1 bg-pharmaBlue-400 text-white py-3 px-4 rounded-md hover:bg-pharmaBlue-400/50 transition font-medium flex items-center justify-center gap-2"
+    >
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m6-5v6a2 2 0 11-4 0v-6m4 0V9a2 2 0 10-4 0v4.01" />
+      </svg>
+      Add to Cart
+    </button>
+    <a href="/transfer-prescription" class="flex-1">
+      <button class="w-full bg-white border-2 border-pharmaBlue-400 text-pharmaBlue-400 py-3 px-4 rounded-md hover:bg-pharmaBlue-50 transition font-medium flex items-center justify-center gap-2">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+        </svg>
+        Transfer Prescription
+      </button>
+    </a>
+  </div>
+</div>
 
-          <!-- Tadalafil Card -->
-          <div
-            class="w-full md:max-w-xl bg-white/95 rounded-xl shadow-lg p-6 backdrop-blur-sm"
-          >
-            <div class="flex items-center gap-4 mb-6">
-              <div
-                class="w-12 h-12 bg-pharmaBlue-400 rounded-full flex items-center justify-center"
-              >
-                <svg
-                  class="w-6 h-6 text-white"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                >
-                  <rect
-                    x="3"
-                    y="8"
-                    width="18"
-                    height="8"
-                    rx="4"
-                    stroke-width="2"
-                  />
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M12 8v8"
-                  />
-                </svg>
-              </div>
-              <div>
-                <h3 class="text-xl font-bold text-gray-800">Tadalafil</h3>
-                <p class="text-gray-600">Generic For: Cialis</p>
-              </div>
-            </div>
-            <!-- Generic Price Display -->
-            <div class="grid grid-cols-2 gap-4 mb-4">
-              <div class="border border-gray-200 rounded-lg p-4 bg-green-50">
-                <span class="text-sm text-gray-500">Our Generic Price</span>
-                <div class="font-bold text-green-600">
-                  ${{ currentPriceMedTwo }}
-                </div>
-              </div>
-            </div>
-            <!-- Dosage Options (Unique Sizes) -->
-            <div class="mb-4">
-              <h4 class="mb-2 font-bold text-gray-700">Select Dosage</h4>
-              <div class="flex gap-2">
-                <button
-                  v-for="dosage in tadDosages"
-                  :key="dosage"
-                  @click="selectedTadDosage = dosage"
-                  :class="
-                    selectedTadDosage === dosage
-                      ? 'px-4 py-2 bg-pharmaBlue-400 text-white rounded'
-                      : 'px-4 py-2 border border-gray-300 rounded hover:bg-gray-50'
-                  "
-                >
-                  {{ dosage }}
-                </button>
-              </div>
-            </div>
-            <!-- Package Size Options (Filtered by Dosage) -->
-            <div class="mb-4" v-if="tadPackageSizes.length">
-              <h4 class="mb-2 font-bold text-gray-700">Select Package Size</h4>
-              <div class="flex gap-2">
-                <button
-                  v-for="pkg in tadPackageSizes"
-                  :key="pkg.count + pkg.countUnit"
-                  @click="selectedTadPackage = pkg"
-                  :class="
-                    selectedTadPackage &&
-                    selectedTadPackage.count === pkg.count &&
-                    selectedTadPackage.countUnit === pkg.countUnit
-                      ? 'px-4 py-2 bg-pharmaBlue-400 text-white rounded'
-                      : 'px-4 py-2 border border-gray-300 rounded hover:bg-gray-50'
-                  "
-                >
-                  {{ pkg.count }}{{ pkg.countUnit }}
-                </button>
-              </div>
-            </div>
-            <a href="/transfer-prescription">
-              <button
-                class="w-full mt-4 bg-pharmaBlue-400 text-white py-3 rounded-md hover:bg-opacity-90 transition"
-              >
-                Transfer Your Prescription Now
-              </button>
-            </a>
-          </div>
+<!-- Tadalafil Card -->
+<div class="w-full md:max-w-xl bg-white/95 rounded-xl shadow-lg p-6 backdrop-blur-sm">
+  <div class="flex items-center gap-4 mb-6">
+    <div class="w-12 h-12 bg-pharmaBlue-400 rounded-full flex items-center justify-center">
+      <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
+        <rect x="3" y="8" width="18" height="8" rx="4" stroke-width="2" />
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v8" />
+      </svg>
+    </div>
+    <div>
+      <h3 class="text-xl font-bold text-gray-800">Tadalafil</h3>
+      <p class="text-gray-600">Generic For: Cialis</p>
+    </div>
+  </div>
+  
+  <!-- Generic Price Display -->
+  <div class="grid grid-cols-2 gap-4 mb-4">
+    <div class="border border-gray-200 rounded-lg p-4 bg-green-50">
+      <span class="text-sm text-gray-500">Our Generic Price</span>
+      <div class="font-bold text-green-600">
+        ${{ currentPriceMedTwo }}
+      </div>
+    </div>
+  </div>
+  
+  <!-- Dosage Options -->
+  <div class="mb-4">
+    <h4 class="mb-2 font-bold text-gray-700">Select Dosage</h4>
+    <div class="flex gap-2">
+      <button
+        v-for="dosage in tadDosages"
+        :key="dosage"
+        @click="selectedTadDosage = dosage"
+        :class="
+          selectedTadDosage === dosage
+            ? 'px-4 py-2 bg-pharmaBlue-400 text-white rounded'
+            : 'px-4 py-2 border border-gray-300 rounded hover:bg-gray-50'
+        "
+      >
+        {{ dosage }}
+      </button>
+    </div>
+  </div>
+  
+  <!-- Package Size Options -->
+  <div class="mb-4" v-if="tadPackageSizes.length">
+    <h4 class="mb-2 font-bold text-gray-700">Select Package Size</h4>
+    <div class="flex gap-2">
+      <button
+        v-for="pkg in tadPackageSizes"
+        :key="pkg.count + pkg.countUnit"
+        @click="selectedTadPackage = pkg"
+        :class="
+          selectedTadPackage &&
+          selectedTadPackage.count === pkg.count &&
+          selectedTadPackage.countUnit === pkg.countUnit
+            ? 'px-4 py-2 bg-pharmaBlue-400 text-white rounded'
+            : 'px-4 py-2 border border-gray-300 rounded hover:bg-gray-50'
+        "
+      >
+        {{ pkg.count }} {{ pkg.countUnit }}
+      </button>
+    </div>
+  </div>
+  
+  <!-- Action Buttons - Side by Side -->
+  <div class="flex gap-3 mt-4">
+    <button
+      @click="addToCart('tadalafil')"
+      class="flex-1 bg-pharmaBlue-400 text-white py-3 px-4 rounded-md hover:bg-pharmaBlue-400/50 transition font-medium flex items-center justify-center gap-2"
+    >
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m6-5v6a2 2 0 11-4 0v-6m4 0V9a2 2 0 10-4 0v4.01" />
+      </svg>
+      Add to Cart
+    </button>
+    <a href="/transfer-prescription" class="flex-1">
+      <button class="w-full bg-white border-2 border-pharmaBlue-400 text-pharmaBlue-400 py-3 px-4 rounded-md hover:bg-pharmaBlue-50 transition font-medium flex items-center justify-center gap-2">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+        </svg>
+        Transfer Prescription
+      </button>
+    </a>
+  </div>
+</div>
         </div>
       </div>
     </div>
@@ -221,6 +215,7 @@
     <MedLandingHowItWorksContainer />
     <MedLandingBenefitsContainer />
     <SocialProofContainer />
+    <!-- google reviews widget -->
     <AboveFooterCTAContainer />
     <NewFooter />
   </div>
@@ -236,6 +231,7 @@ import MedLandingHowItWorksContainer from "~/components/layout/medLanding/medLan
 import MedLandingBenefitsContainer from "~/components/layout/medLanding/medLandingBenefitsContainer.vue";
 import SocialProofContainer from "~/components/layout/socialProofContainer.vue";
 import AboveFooterCTAContainer from "~/components/layout/medLanding/aboveFooterCTAContainer.vue";
+// import GoogleReviewsWidget from "~/components/googleReviewsWidget.vue";
 import NewFooter from "~/components/layout/newFooter.vue";
 import { useNuxtData } from "#app";
 const router = useRouter();
