@@ -155,7 +155,9 @@ const calculateTotal = () => {
                   Continue Shopping
                 </NuxtLink>
                 <NuxtLink
-                  to="/checkout"
+                  :to="
+                    auth.isLoggedIn ? '/checkout' : '/login?redirect=/checkout'
+                  "
                   class="inline-flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none"
                 >
                   Proceed to Checkout
