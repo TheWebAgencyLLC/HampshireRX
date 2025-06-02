@@ -124,22 +124,18 @@
             <div class="flex gap-3 mt-4">
               <button
                 @click="addToCart('sildenafil')"
-                class="flex-1 bg-pharmaBlue-400 text-white py-3 px-4 rounded-md hover:bg-pharmaBlue-400/50 transition font-medium flex items-center justify-center gap-2"
+                class="w-full flex items-center justify-center gap-3 px-6 py-3.5 bg-pharmaBlue-400 text-white text-sm font-semibold rounded-md hover:bg-pharmaBlue-500 transition-all duration-200 focus:outline-none focus:ring-3 focus:ring-pharmaBlue-300 focus:ring-offset-2 shadow-md hover:shadow-lg"
               >
-                <svg
-                  class="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+                <div
+                  class="w-6 h-6 bg-white rounded-full flex items-center justify-center flex-shrink-0"
                 >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m6-5v6a2 2 0 11-4 0v-6m4 0V9a2 2 0 10-4 0v4.01"
+                  <img
+                    src="/public/images/icons8-cart-24.png"
+                    alt="Cart"
+                    class="w-4 h-4"
                   />
-                </svg>
-                Add to Cart
+                </div>
+                <span class="font-semibold tracking-wide">ADD TO CART</span>
               </button>
               <a href="/transfer-prescription" class="flex-1">
                 <button
@@ -253,22 +249,18 @@
             <div class="flex gap-3 mt-4">
               <button
                 @click="addToCart('tadalafil')"
-                class="flex-1 bg-pharmaBlue-400 text-white py-3 px-4 rounded-md hover:bg-pharmaBlue-400/50 transition font-medium flex items-center justify-center gap-2"
+                class="w-full flex items-center justify-center gap-3 px-6 py-3.5 bg-pharmaBlue-400 text-white text-sm font-semibold rounded-md hover:bg-pharmaBlue-500 transition-all duration-200 focus:outline-none focus:ring-3 focus:ring-pharmaBlue-300 focus:ring-offset-2 shadow-md hover:shadow-lg"
               >
-                <svg
-                  class="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+                <div
+                  class="w-6 h-6 bg-white rounded-full flex items-center justify-center flex-shrink-0"
                 >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m6-5v6a2 2 0 11-4 0v-6m4 0V9a2 2 0 10-4 0v4.01"
+                  <img
+                    src="/public/images/icons8-cart-24.png"
+                    alt="Cart"
+                    class="w-4 h-4"
                   />
-                </svg>
-                Add to Cart
+                </div>
+                <span class="font-semibold tracking-wide">ADD TO CART</span>
               </button>
               <a href="/transfer-prescription" class="flex-1">
                 <button
@@ -329,6 +321,7 @@ import AboveFooterCTAContainer from "~/components/layout/medLanding/aboveFooterC
 // import GoogleReviewsWidget from "~/components/googleReviewsWidget.vue";
 import NewFooter from "~/components/layout/newFooter.vue";
 import { useNuxtData } from "#app";
+
 const router = useRouter();
 
 // Toast notification state
@@ -622,9 +615,11 @@ watch(
 a {
   position: relative;
 }
+
 a:hover span {
   transform: scaleX(1);
 }
+
 a span {
   transform: scaleX(0);
   transition: transform 0.3s ease;
