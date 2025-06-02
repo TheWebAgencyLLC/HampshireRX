@@ -64,7 +64,7 @@ const calculateTotal = () => {
   }, 0);
 };
 
-console.log(guestCart.cart);
+//console.log(guestCart.cart);
 </script>
 
 <template>

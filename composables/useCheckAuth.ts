@@ -9,7 +9,7 @@ export const useCheckAuth = async () => {
         Authorization: auth.authtoken,
       },
     });
-    console.log(data.value);
+    //console.log(data.value);
     //@ts-ignore
     if (data.value?.email) {
       isLoggedIn.value = true;

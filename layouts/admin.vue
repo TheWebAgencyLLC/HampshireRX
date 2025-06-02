@@ -39,7 +39,7 @@ const formattedTime = computed(() => {
 // Logout function (to be implemented later)
 const handleLogout = () => {
   // Placeholder for logout logic
-  console.log("Logout clicked");
+  //console.log("Logout clicked");
 };
 </script>
 

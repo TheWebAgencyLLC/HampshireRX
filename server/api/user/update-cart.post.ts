@@ -35,7 +35,7 @@ export default defineEventHandler(async (event) => {
     );
 
     let updatedUser;
-    console.log(item.quantity);
+    //console.log(item.quantity);
     if (existingItemIndex !== -1) {
       // Calculate the difference to add
       const currentQuantity = user.cart[existingItemIndex].quantity || 0;

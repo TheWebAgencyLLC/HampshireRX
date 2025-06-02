@@ -28,7 +28,7 @@ export const useCartGuestStore = defineStore(
           cartItem.medication.price === item.medication.price &&
           cartItem.medication.size === item.medication.size,
       );
-      console.log(existingItemIndex);
+      //console.log(existingItemIndex);
 
       if (existingItemIndex !== -1) {
         const currentQuantity = cart.value[existingItemIndex].quantity || 0;

@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
     //@ts-ignore
     const userEmail = payload.email;
     const user = await userSchema.findOne({ email: userEmail });
-    console.log(user);
+    //console.log(user);
 
     //Initialize stripe, passing the H3Event
     const stripe = await useServerStripe(event);

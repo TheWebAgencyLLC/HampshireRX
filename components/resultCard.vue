@@ -152,7 +152,7 @@ async function addToCart() {
         method: "POST",
         body: { item },
       });
-      console.log(res);
+      //console.log(res);
 
       // Fix the undefined cart issue
       if (res && res.cart && Array.isArray(res.cart)) {
@@ -187,7 +187,7 @@ async function addToCart() {
       }
     }
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     // Show error toast
     toastTitle.value = "Error";
     toastMessage.value = "Failed to add item to cart. Please try again.";

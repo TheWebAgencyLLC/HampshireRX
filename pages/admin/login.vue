@@ -59,7 +59,7 @@ async function trylog() {
         password: password.value,
       },
     });
-    // console.log(res)
+    // //console.log(res)
     if (res.loggedIn) {
       return navigateTo("/admin/medIndex");
     }

@@ -11,27 +11,27 @@ async function send() {
         password: password.value,
       },
     });
-    console.log(res);
+    //console.log(res);
   } catch (e) {
-    console.log(e);
+    //console.log(e);
   }
 }
 
 async function debug() {
   try {
     const res = await $fetch("/api/test/test-roles");
-    console.log(res);
+    //console.log(res);
   } catch (e) {
-    console.log(e);
+    //console.log(e);
   }
 }
 
 async function cleartoken() {
   try {
     const res = await $fetch("/api/test/clear");
-    console.log(res);
+    //console.log(res);
   } catch (e) {
-    console.log(e);
+    //console.log(e);
   }
 }
 
@@ -40,9 +40,9 @@ async function session() {
     const res = await $fetch("/api/user/update", {
       method: "POST",
     });
-    console.log(res);
+    //console.log(res);
   } catch (e) {
-    console.log(e);
+    //console.log(e);
   }
 }
 
@@ -65,9 +65,9 @@ async function updateUser() {
       method: "POST",
       body: { ...updateTest.value },
     });
-    console.log(res);
+    //console.log(res);
   } catch (e) {
-    console.log(e);
+    //console.log(e);
   }
 }
 </script>

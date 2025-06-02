@@ -37,8 +37,8 @@ const { data: orderData } = await useFetch<Order[]>("/api/orders/customer", {
   },
 });
 
-console.log(data.value);
-console.log(orderData.value);
+//console.log(data.value);
+//console.log(orderData.value);
 
 // Toast notification state
 const showToast = ref(false);
@@ -85,7 +85,7 @@ const submitChanges = async () => {
     toastType.value = "success";
     showToast.value = true;
   } catch (err) {
-    console.log(err);
+    //console.log(err);
 
     // Show error toast
     toastTitle.value = "Update Failed";
@@ -314,7 +314,7 @@ const toggleOrderDetails = (orderId) => {
                     type="date"
                     v-model="editedUser.DOB"
                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                />
+                  />
                 </div>
 
                 <div>
@@ -391,19 +391,23 @@ const toggleOrderDetails = (orderId) => {
 
             <div class="p-6">
               <!-- No Orders View -->
-              <div v-if="!orderData || orderData.length === 0" class="text-center py-12">
+              <div
+                v-if="!orderData || orderData.length === 0"
+                class="text-center py-12"
+              >
                 <div class="flex justify-center mb-6">
-                  <img 
-                    src="/images/noOrdersView.png" 
-                    alt="No orders illustration" 
+                  <img
+                    src="/images/noOrdersView.png"
+                    alt="No orders illustration"
                     class="max-w-xs w-full h-auto border border-pharmaBlue-400"
                   />
                 </div>
                 <p class="text-gray-500 mb-6">
-                  You haven't placed any orders yet. Start browsing our products to place your first order!
+                  You haven't placed any orders yet. Start browsing our products
+                  to place your first order!
                 </p>
-                <NuxtLink 
-                  to="/products" 
+                <NuxtLink
+                  to="/products"
                   class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white font-medium rounded-md hover:bg-indigo-700 transition-colors"
                 >
                   Browse Products

@@ -94,7 +94,7 @@ async function handleSignup() {
       currentStep.value = 1;
       errorMessage.value = "Email already exists";
     }
-    console.log(e.message);
+    //console.log(e.message);
   }
 }
 </script>

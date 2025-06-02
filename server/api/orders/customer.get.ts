@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) => {
       .find({ customer: targetUser?._id })
       .populate("items");
   } catch (error: any) {
-    console.log(error);
+    //console.log(error);
     return createError({
       statusCode: 500,
       statusMessage: error.statusMessage || error.message,

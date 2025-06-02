@@ -41,7 +41,7 @@ const { data: MEDICATION_DATA } = await useFetch("/api/medications/findById", {
     MEDICATION.value = response._data.body;
   },
 });
-console.log(MEDICATION_DATA.value);
+//console.log(MEDICATION_DATA.value);
 
 //BLACK MAGIC TO ENSURE PROPER LOADING AND TYPE SAFETY.
 const medicationData = computed(() => {
@@ -72,7 +72,7 @@ const populateEditedMedication = (option: Option) => {
 
 const UPDATE_MED = async () => {
   try {
-    console.log(medicationData.value);
+    //console.log(medicationData.value);
     const RES = await $fetch("/api/medications/update", {
       method: "POST",
       body: {
@@ -81,11 +81,11 @@ const UPDATE_MED = async () => {
         _id: medicationData.value._id,
       },
     });
-    console.log(RES);
-    console.log(MEDICATION_DATA.value);
+    //console.log(RES);
+    //console.log(MEDICATION_DATA.value);
     // reloadNuxtApp();
   } catch (err: any) {
-    console.log(err);
+    //console.log(err);
   }
 };
 

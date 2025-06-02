@@ -331,7 +331,7 @@ async function createOrder() {
   try {
     const res = await $fetch();
   } catch (e) {
-    console.log(e);
+    //console.log(e);
   }
 }
 </script>

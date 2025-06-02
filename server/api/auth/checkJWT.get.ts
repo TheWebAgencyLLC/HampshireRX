@@ -4,6 +4,6 @@ export default defineEventHandler(async (event) => {
     const authorization = headers.authorization;
     return verifyToken(authorization as string);
   } catch (error: any) {
-    console.log(error);
+    //console.log(error);
   }
 });

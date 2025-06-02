@@ -10,7 +10,7 @@ const authForm = reactive({
 });
 
 const route = useRoute();
-console.log(route.query.redirect);
+//console.log(route.query.redirect);
 
 //error text
 const errorText = ref(undefined);
@@ -37,7 +37,7 @@ const submitForm = async () => {
               body: { item },
             });
           } catch (e) {
-            console.log(e);
+            //console.log(e);
           }
         }
         guestCart.clearCart();

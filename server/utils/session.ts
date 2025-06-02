@@ -11,7 +11,7 @@ export async function _useSession(
     password: mongo.secret,
     name: "authorization",
   });
-  console.log(session);
+  //console.log(session);
   if (email) await session.update({ email, token });
   return {
     ...session,
