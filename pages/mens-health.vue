@@ -321,8 +321,11 @@ import AboveFooterCTAContainer from "~/components/layout/medLanding/aboveFooterC
 // import GoogleReviewsWidget from "~/components/googleReviewsWidget.vue";
 import NewFooter from "~/components/layout/newFooter.vue";
 import { useNuxtData } from "#app";
+import { useCartGuestStore } from "#imports";
 
 const router = useRouter();
+const { isLoggedIn } = useCartGuestStore();
+const cartStore = useCartGuestStore();
 
 // Toast notification state
 const showToast = ref(false);
@@ -517,42 +520,64 @@ async function addToCart(medicationType: "sildenafil" | "tadalafil") {
   };
 
   try {
-    const res = await $fetch("/api/user/update-cart", {
-      method: "POST",
-      body: { item },
-    });
-    console.log(res);
-
-    // Fix the undefined cart issue
-    if (res && res.cart && Array.isArray(res.cart)) {
+    if (!isLoggedIn) {
+      cartStore.updateCartQuantity(item);
       const previousCount = store.count || 0;
-      //@ts-ignore
-      store.setCount(res.cart.length);
-
+      store.setCount(cartStore.cart.length);
       // Show success toast
       toastTitle.value = "Added to Cart";
       toastMessage.value = `${medicationData.name} (${selectedPackage.count} ${selectedPackage.countUnit}) added to cart`;
       toastType.value = "success";
       showToast.value = true;
-
       // Only trigger cart animation if count actually increased
-      if (res.cart.length > previousCount) {
+      if (cartStore.cart.length > previousCount) {
         // Use setTimeout to ensure the animation is triggered after DOM updates
         setTimeout(() => {
           window.dispatchEvent(
             new CustomEvent("cart-item-added", {
-              detail: { newCount: res.cart.length, previousCount },
+              detail: { newCount: cartStore.cart.length, previousCount },
             }),
           );
         }, 100);
       }
     } else {
-      console.error("Invalid cart response:", res);
-      // Show error toast
-      toastTitle.value = "Error";
-      toastMessage.value = "Failed to add item to cart. Please try again.";
-      toastType.value = "error";
-      showToast.value = true;
+      const res = await $fetch("/api/user/update-cart", {
+        method: "POST",
+        body: { item },
+      });
+      console.log(res);
+
+      // Fix the undefined cart issue
+      if (res && res.cart && Array.isArray(res.cart)) {
+        const previousCount = store.count || 0;
+        //@ts-ignore
+        store.setCount(res.cart.length);
+
+        // Show success toast
+        toastTitle.value = "Added to Cart";
+        toastMessage.value = `${medicationData.name} (${selectedPackage.count} ${selectedPackage.countUnit}) added to cart`;
+        toastType.value = "success";
+        showToast.value = true;
+
+        // Only trigger cart animation if count actually increased
+        if (res.cart.length > previousCount) {
+          // Use setTimeout to ensure the animation is triggered after DOM updates
+          setTimeout(() => {
+            window.dispatchEvent(
+              new CustomEvent("cart-item-added", {
+                detail: { newCount: res.cart.length, previousCount },
+              }),
+            );
+          }, 100);
+        }
+      } else {
+        console.error("Invalid cart response:", res);
+        // Show error toast
+        toastTitle.value = "Error";
+        toastMessage.value = "Failed to add item to cart. Please try again.";
+        toastType.value = "error";
+        showToast.value = true;
+      }
     }
   } catch (e) {
     console.log(e);

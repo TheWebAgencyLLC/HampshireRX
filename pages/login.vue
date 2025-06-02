@@ -14,6 +14,7 @@ console.log(route.query.redirect);
 
 //error text
 const errorText = ref(undefined);
+const guestCart = useCartGuestStore();
 
 //submit login
 const submitForm = async () => {
@@ -28,6 +29,19 @@ const submitForm = async () => {
 
     if (res.loggedIn && res.token) {
       auth.setAuth(res.token, res.user, res.name);
+      if (guestCart.cart.length > 0) {
+        for (let item of guestCart.cart) {
+          try {
+            const response = await $fetch("/api/user/update-cart", {
+              method: "POST",
+              body: { item },
+            });
+          } catch (e) {
+            console.log(e);
+          }
+        }
+        guestCart.clearCart();
+      }
 
       if (route.query.redirect) {
         // Handle redirect properly

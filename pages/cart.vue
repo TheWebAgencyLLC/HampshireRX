@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useAuthStore, useCartStore } from "#imports";
+import { useAuthStore, useCartGuestStore, useCartStore } from "#imports";
 
 const { data: cartData } = await useFetch("/api/user/cart", {
   method: "GET",
@@ -8,30 +8,41 @@ const { data: cartData } = await useFetch("/api/user/cart", {
 const auth = useAuthStore();
 const isUpdating = ref(false);
 const cart = useCartStore();
+const guestCart = useCartGuestStore();
 
 const updateQuantity = async (item: any, delta: number) => {
-  try {
-    isUpdating.value = true;
-    const res = await $fetch("/api/user/update-cart", {
-      method: "POST",
-      //@ts-ignore
-      headers: {
-        authorization: auth.authtoken,
-      },
-      body: {
-        item: {
-          ...item,
-          quantity: item.quantity + delta,
+  if (!auth.isLoggedIn) {
+    guestCart.updateCartQuantity(item, delta);
+    cart.setCount(guestCart.cart.length);
+    return;
+  } else {
+    try {
+      isUpdating.value = true;
+      const res = await $fetch("/api/user/update-cart", {
+        method: "POST",
+        //@ts-ignore
+        headers: {
+          authorization: auth.authtoken,
         },
-      },
-    });
-    await refreshNuxtData("cart");
-    isUpdating.value = false;
-  } catch (e) {
-    console.error(e);
+        body: {
+          item: {
+            ...item,
+            quantity: item.quantity + delta,
+          },
+        },
+      });
+      await refreshNuxtData("cart");
+      isUpdating.value = false;
+    } catch (e) {
+      console.error(e);
+    }
   }
 };
 const removeItem = async (item: any) => {
+  if (!auth.isLoggedIn) {
+    guestCart.removeFromCart(item);
+    cart.setCount(guestCart.cart.length);
+  }
   try {
     const res = await $fetch("/api/user/remove-item", {
       method: "POST",
@@ -47,10 +58,13 @@ const removeItem = async (item: any) => {
 };
 
 const calculateTotal = () => {
-  return cartData.value?.cart.reduce((total, item) => {
+  const targetCart = auth.isLoggedIn ? cartData.value?.cart : guestCart.cart;
+  return targetCart?.reduce((total, item) => {
     return total + item.medication.price * item.quantity;
   }, 0);
 };
+
+console.log(guestCart.cart);
 </script>
 
 <template>
@@ -68,11 +82,16 @@ const calculateTotal = () => {
 
         <!-- Cart Items -->
         <div class="bg-white rounded-xl shadow-md overflow-hidden p-6 md:p-8">
-          <div v-if="cartData.cart && cartData.cart.length > 0">
+          <div
+            v-if="
+              (cartData.cart && cartData.cart.length > 0) ||
+              (guestCart.cart && guestCart.cart.length > 0)
+            "
+          >
             <!-- Cart Items List -->
             <div class="space-y-6">
               <div
-                v-for="(item, index) in cartData.cart"
+                v-for="(item, index) in cartData.cart || guestCart.cart"
                 :key="index"
                 class="flex flex-col sm:flex-row justify-between border-b border-gray-200 pb-6 last:border-0 last:pb-0"
               >
