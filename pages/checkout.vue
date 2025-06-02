@@ -163,6 +163,15 @@
 import { ref, watch } from "vue";
 import { useClientStripe } from "#imports";
 
+definePageMeta({
+  middleware: () => {
+    const auth = useAuthStore();
+    if (!auth.isLoggedIn) {
+      return navigateTo("/login");
+    }
+  },
+});
+
 const { data: cartData } = await useFetch("/api/user/cart", {
   method: "GET",
 });
