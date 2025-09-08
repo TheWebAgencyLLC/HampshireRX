@@ -4,7 +4,7 @@ import { medicationSchema } from "~/server/models/medication.schema";
 export default defineEventHandler(async (event) => {
   try {
     const { topMedications } = await readBody(event);
-    // console.log("Original topMedications:", topMedications);
+    // //console.log("Original topMedications:", topMedications);
 
     // Update each med in the array with the startingAt field (lowest price)
     const updatedTopMeds = await Promise.all(
@@ -28,7 +28,7 @@ export default defineEventHandler(async (event) => {
       }),
     );
 
-    // console.log("Updated topMedications:", updatedTopMeds);
+    // //console.log("Updated topMedications:", updatedTopMeds);
 
     const meds = await settingsSchema.findOneAndUpdate(
       {},

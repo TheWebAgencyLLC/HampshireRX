@@ -98,7 +98,6 @@
 
 <script setup>
 import { ref } from "vue";
-import { gql } from "graphql-tag";
 
 const gtm = useGTM();
 const medList = ref([]);
@@ -118,7 +117,7 @@ watch(searchValue, async (newValue, oldValue) => {
     medSuggestions.value = medList.value.filter((med) =>
       med.name.toLowerCase().includes(newValue.toLowerCase()),
     );
-    // console.log(medSuggestions.value);
+    // //console.log(medSuggestions.value);
   } else {
     medSuggestions.value = [];
   }
@@ -132,7 +131,7 @@ const { data } = await useFetch("/api/medications/listNames", {
 });
 
 watch(data, async (newValue, oldValue) => {
-  console.log(data.value.body);
+  //console.log(data.value.body);
   medList.value = data.value.body;
 });
 
@@ -148,7 +147,7 @@ const handleSearch = (n) => {
   // Handle the search logic here
   emit("search", searchValue.value);
   searchValue.value = "";
-  // console.log(searchValue.value)
+  // //console.log(searchValue.value)
 };
 
 const emit = defineEmits(["search"]);

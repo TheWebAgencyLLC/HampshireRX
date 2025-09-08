@@ -25,7 +25,7 @@
     </div>
 
     <!-- Navigation and Banner Components -->
-    <MedLandingNavigation />
+    <LayoutAppHeader />
     <DiscountBanner />
 
     <div
@@ -69,6 +69,7 @@
                 <p class="text-gray-600">Generic For: Viagra</p>
               </div>
             </div>
+
             <!-- Generic Price Display -->
             <div class="grid grid-cols-2 gap-4 mb-4">
               <div class="border border-gray-200 rounded-lg p-4 bg-green-50">
@@ -78,7 +79,8 @@
                 </div>
               </div>
             </div>
-            <!-- Dosage Options (Unique Sizes) -->
+
+            <!-- Dosage Options -->
             <div class="mb-4">
               <h4 class="mb-2 font-bold text-gray-700">Select Dosage</h4>
               <div class="flex gap-2">
@@ -96,7 +98,8 @@
                 </button>
               </div>
             </div>
-            <!-- Package Size Options (Filtered by Dosage) -->
+
+            <!-- Package Size Options -->
             <div class="mb-4" v-if="sildPackageSizes.length">
               <h4 class="mb-2 font-bold text-gray-700">Select Package Size</h4>
               <div class="flex gap-2">
@@ -112,17 +115,49 @@
                       : 'px-4 py-2 border border-gray-300 rounded hover:bg-gray-50'
                   "
                 >
-                  {{ pkg.count }}{{ pkg.countUnit }}
+                  {{ pkg.count }} {{ pkg.countUnit }}
                 </button>
               </div>
             </div>
-            <a href="/transfer-prescription">
+
+            <!-- Action Buttons - Side by Side -->
+            <div class="flex gap-3 mt-4">
               <button
-                class="w-full mt-4 bg-pharmaBlue-400 text-white py-3 rounded-md hover:bg-opacity-90 transition"
+                @click="addToCart('sildenafil')"
+                class="w-full flex items-center justify-center gap-3 px-6 py-3.5 bg-pharmaBlue-400 text-white text-sm font-semibold rounded-md hover:bg-pharmaBlue-500 transition-all duration-200 focus:outline-none focus:ring-3 focus:ring-pharmaBlue-300 focus:ring-offset-2 shadow-md hover:shadow-lg"
               >
-                Transfer Your Prescription Now
+                <div
+                  class="w-6 h-6 bg-white rounded-full flex items-center justify-center flex-shrink-0"
+                >
+                  <img
+                    src="/public/images/icons8-cart-24.png"
+                    alt="Cart"
+                    class="w-4 h-4"
+                  />
+                </div>
+                <span class="font-semibold tracking-wide">ADD TO CART</span>
               </button>
-            </a>
+              <a href="/transfer-prescription" class="flex-1">
+                <button
+                  class="w-full bg-white border-2 border-pharmaBlue-400 text-pharmaBlue-400 py-3 px-4 rounded-md hover:bg-pharmaBlue-50 transition font-medium flex items-center justify-center gap-2"
+                >
+                  <svg
+                    class="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
+                    />
+                  </svg>
+                  Transfer Prescription
+                </button>
+              </a>
+            </div>
           </div>
 
           <!-- Tadalafil Card -->
@@ -159,6 +194,7 @@
                 <p class="text-gray-600">Generic For: Cialis</p>
               </div>
             </div>
+
             <!-- Generic Price Display -->
             <div class="grid grid-cols-2 gap-4 mb-4">
               <div class="border border-gray-200 rounded-lg p-4 bg-green-50">
@@ -168,7 +204,8 @@
                 </div>
               </div>
             </div>
-            <!-- Dosage Options (Unique Sizes) -->
+
+            <!-- Dosage Options -->
             <div class="mb-4">
               <h4 class="mb-2 font-bold text-gray-700">Select Dosage</h4>
               <div class="flex gap-2">
@@ -186,7 +223,8 @@
                 </button>
               </div>
             </div>
-            <!-- Package Size Options (Filtered by Dosage) -->
+
+            <!-- Package Size Options -->
             <div class="mb-4" v-if="tadPackageSizes.length">
               <h4 class="mb-2 font-bold text-gray-700">Select Package Size</h4>
               <div class="flex gap-2">
@@ -202,17 +240,49 @@
                       : 'px-4 py-2 border border-gray-300 rounded hover:bg-gray-50'
                   "
                 >
-                  {{ pkg.count }}{{ pkg.countUnit }}
+                  {{ pkg.count }} {{ pkg.countUnit }}
                 </button>
               </div>
             </div>
-            <a href="/transfer-prescription">
+
+            <!-- Action Buttons - Side by Side -->
+            <div class="flex gap-3 mt-4">
               <button
-                class="w-full mt-4 bg-pharmaBlue-400 text-white py-3 rounded-md hover:bg-opacity-90 transition"
+                @click="addToCart('tadalafil')"
+                class="w-full flex items-center justify-center gap-3 px-6 py-3.5 bg-pharmaBlue-400 text-white text-sm font-semibold rounded-md hover:bg-pharmaBlue-500 transition-all duration-200 focus:outline-none focus:ring-3 focus:ring-pharmaBlue-300 focus:ring-offset-2 shadow-md hover:shadow-lg"
               >
-                Transfer Your Prescription Now
+                <div
+                  class="w-6 h-6 bg-white rounded-full flex items-center justify-center flex-shrink-0"
+                >
+                  <img
+                    src="/public/images/icons8-cart-24.png"
+                    alt="Cart"
+                    class="w-4 h-4"
+                  />
+                </div>
+                <span class="font-semibold tracking-wide">ADD TO CART</span>
               </button>
-            </a>
+              <a href="/transfer-prescription" class="flex-1">
+                <button
+                  class="w-full bg-white border-2 border-pharmaBlue-400 text-pharmaBlue-400 py-3 px-4 rounded-md hover:bg-pharmaBlue-50 transition font-medium flex items-center justify-center gap-2"
+                >
+                  <svg
+                    class="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
+                    />
+                  </svg>
+                  Transfer Prescription
+                </button>
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -221,14 +291,26 @@
     <MedLandingHowItWorksContainer />
     <MedLandingBenefitsContainer />
     <SocialProofContainer />
+    <!-- google reviews widget -->
     <AboveFooterCTAContainer />
     <NewFooter />
+
+    <!-- Toast Notification -->
+    <ToastNotification
+      v-if="showToast"
+      :title="toastTitle"
+      :message="toastMessage"
+      :type="toastType"
+      @close="onToastClose"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from "vue";
 import { useRouter } from "vue-router";
+import { useCartStore } from "~/composables/useCartStore";
+import ToastNotification from "~/components/ToastNotification.vue";
 import MedLandingNavigation from "~/components/layout/medLanding/medLandingNavigation.vue";
 import DiscountBanner from "~/components/discountBanner.vue";
 import MedLandingHeroSectionContent from "~/components/layout/medLanding/medLandingHeroSectionContent.vue";
@@ -236,9 +318,22 @@ import MedLandingHowItWorksContainer from "~/components/layout/medLanding/medLan
 import MedLandingBenefitsContainer from "~/components/layout/medLanding/medLandingBenefitsContainer.vue";
 import SocialProofContainer from "~/components/layout/socialProofContainer.vue";
 import AboveFooterCTAContainer from "~/components/layout/medLanding/aboveFooterCTAContainer.vue";
+// import GoogleReviewsWidget from "~/components/googleReviewsWidget.vue";
 import NewFooter from "~/components/layout/newFooter.vue";
 import { useNuxtData } from "#app";
+import { useCartGuestStore } from "#imports";
+
 const router = useRouter();
+const { isLoggedIn } = useCartGuestStore();
+const cartStore = useCartGuestStore();
+
+// Toast notification state
+const showToast = ref(false);
+const toastTitle = ref("");
+const toastMessage = ref("");
+const toastType = ref<"success" | "error">("success");
+
+const store = useCartStore();
 
 const handlePrescriptionTransfer = (medication = "") => {
   router.push({
@@ -385,6 +480,120 @@ const currentPriceMedTwo = computed(() => {
   return tadSelectedOption.value ? tadSelectedOption.value.price : "N/A";
 });
 
+// ----- Add to Cart Function -----
+async function addToCart(medicationType: "sildenafil" | "tadalafil") {
+  let selectedOption = null;
+  let medicationData = null;
+  let selectedDosage = "";
+  let selectedPackage = null;
+
+  if (medicationType === "sildenafil") {
+    selectedOption = sildSelectedOption.value;
+    medicationData = SILDENAFIL.value?.[0];
+    selectedDosage = selectedSildDosage.value;
+    selectedPackage = selectedSildPackage.value;
+  } else {
+    selectedOption = tadSelectedOption.value;
+    medicationData = TADALAFIL.value?.[0];
+    selectedDosage = selectedTadDosage.value;
+    selectedPackage = selectedTadPackage.value;
+  }
+
+  // Validate selections first
+  if (!selectedDosage || !selectedPackage || !selectedOption) {
+    toastTitle.value = "Selection Required";
+    toastMessage.value = "Please select both dosage and quantity";
+    toastType.value = "error";
+    showToast.value = true;
+    return;
+  }
+
+  const item = {
+    medication: {
+      name: medicationData.name,
+      count: selectedPackage.count,
+      countUnit: selectedPackage.countUnit,
+      size: selectedDosage,
+      price: parseFloat(selectedOption.price || "0"),
+    },
+    quantity: 1,
+  };
+
+  try {
+    if (!isLoggedIn) {
+      cartStore.updateCartQuantity(item);
+      const previousCount = store.count || 0;
+      store.setCount(cartStore.cart.length);
+      // Show success toast
+      toastTitle.value = "Added to Cart";
+      toastMessage.value = `${medicationData.name} (${selectedPackage.count} ${selectedPackage.countUnit}) added to cart`;
+      toastType.value = "success";
+      showToast.value = true;
+      // Only trigger cart animation if count actually increased
+      if (cartStore.cart.length > previousCount) {
+        // Use setTimeout to ensure the animation is triggered after DOM updates
+        setTimeout(() => {
+          window.dispatchEvent(
+            new CustomEvent("cart-item-added", {
+              detail: { newCount: cartStore.cart.length, previousCount },
+            }),
+          );
+        }, 100);
+      }
+    } else {
+      const res = await $fetch("/api/user/update-cart", {
+        method: "POST",
+        body: { item },
+      });
+      //console.log(res);
+
+      // Fix the undefined cart issue
+      if (res && res.cart && Array.isArray(res.cart)) {
+        const previousCount = store.count || 0;
+        //@ts-ignore
+        store.setCount(res.cart.length);
+
+        // Show success toast
+        toastTitle.value = "Added to Cart";
+        toastMessage.value = `${medicationData.name} (${selectedPackage.count} ${selectedPackage.countUnit}) added to cart`;
+        toastType.value = "success";
+        showToast.value = true;
+
+        // Only trigger cart animation if count actually increased
+        if (res.cart.length > previousCount) {
+          // Use setTimeout to ensure the animation is triggered after DOM updates
+          setTimeout(() => {
+            window.dispatchEvent(
+              new CustomEvent("cart-item-added", {
+                detail: { newCount: res.cart.length, previousCount },
+              }),
+            );
+          }, 100);
+        }
+      } else {
+        console.error("Invalid cart response:", res);
+        // Show error toast
+        toastTitle.value = "Error";
+        toastMessage.value = "Failed to add item to cart. Please try again.";
+        toastType.value = "error";
+        showToast.value = true;
+      }
+    }
+  } catch (e) {
+    //console.log(e);
+    // Show error toast
+    toastTitle.value = "Error";
+    toastMessage.value = "Failed to add item to cart. Please try again.";
+    toastType.value = "error";
+    showToast.value = true;
+  }
+}
+
+// Handle toast close
+const onToastClose = () => {
+  showToast.value = false;
+};
+
 // ----- Set Default Selections When Data Loads -----
 watch(
   sildDosages,
@@ -431,9 +640,11 @@ watch(
 a {
   position: relative;
 }
+
 a:hover span {
   transform: scaleX(1);
 }
+
 a span {
   transform: scaleX(0);
   transition: transform 0.3s ease;

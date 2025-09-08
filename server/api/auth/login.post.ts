@@ -1,33 +1,41 @@
-import {userSchema} from "~/server/models/user.schema";
+import { userSchema } from "~/server/models/user.schema";
 import bcrypt from "bcryptjs";
-import {setAuth} from "~/server/utils/auth";
+import { setAuth } from "~/server/utils/auth";
 
 export default defineEventHandler(async (event) => {
-    try {
-        const {email, password} = await readBody(event)
-        if(!email || !password){
-            throw new Error("Email or password is missing")
-        }
-        const user = await userSchema.findOne({email})
-        if(!user){
-            throw new Error("User not found")
-        }
-        // console.log(user.password)
-        const matches = bcrypt.compareSync(password, user.password)
-        if(!matches){
-            throw new Error("Password is incorrect")
-        }
-        await setAuth(event, user.email)
-        return {
-            loggedIn: true,
-            user: user.email as string
-        }
-
-    } catch (error:any) {
-        return {
-            statusCode: 500,
-            message: error.message
-        }
+  try {
+    const { email, password } = await readBody(event);
+    if (!email || !password) {
+      return createError({ statusMessage: "Email or password is missing" });
+    }
+    const user = await userSchema.findOne({ email });
+    if (!user) {
+      return createError({ statusMessage: "User not found" });
     }
 
-})
+    const matches = bcrypt.compareSync(password, user.password);
+    if (!matches) {
+      return createError({ statusMessage: "Password is incorrect" });
+    }
+
+    // setAuth creates and stores token - let's capture the session data it returns
+    const session = await setAuth(event, user.email);
+
+    // Return the token along with the user info
+    return {
+      loggedIn: true,
+      user: user.email as string,
+      token: session.data.token, // Return the token from the session
+      name: user.firstName,
+    };
+  } catch (error: any) {
+    return createError({
+      statusCode: error.statusCode || 500,
+      statusMessage:
+        error.message ||
+        error.statusMessage ||
+        error.statusText ||
+        "Internal Server Error",
+    });
+  }
+});

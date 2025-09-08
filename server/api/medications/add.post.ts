@@ -6,6 +6,7 @@ export default defineEventHandler(async (event) => {
     const med = await medicationSchema.create({
       name,
       options,
+      canBeSold: false,
     });
     await med.save();
     return {
