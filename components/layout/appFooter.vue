@@ -279,6 +279,7 @@ import ConstantContactForm from "~/components/constantContactForm.vue";
 const footerLinks = [
   { text: "Home", url: "/" },
   { text: "About Us", url: "/about" },
+  { text: "Telehealth", url: "/telehealth" },
   { text: "Mens Health", url: "/mens-health" },
   { text: "Privacy Policy", url: "/privacy" },
   { text: "FAQs", url: "/faq" },
