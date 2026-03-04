@@ -4,7 +4,8 @@ definePageMeta({
   middleware: "auth",
 });
 
-const { data: subscribers, refresh } = await useFetch("/api/newsletter/subscribers");
+const headers = useRequestHeaders(["cookie"]);
+const { data: subscribers, refresh } = await useFetch("/api/newsletter/subscribers", { headers });
 
 const formattedSubscribers = computed(() => {
   if (!subscribers.value || !Array.isArray(subscribers.value)) return [];
