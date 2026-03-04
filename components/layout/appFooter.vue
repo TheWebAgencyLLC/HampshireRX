@@ -140,7 +140,7 @@
           </ul>
         </div>
 
-        <!-- Constant Contact / Stay Connected Section -->
+        <!-- Newsletter / Stay Connected Section -->
         <div class="space-y-4">
           <div class="flex items-center space-x-2">
             <svg
@@ -161,10 +161,7 @@
               Stay Connected
             </h3>
           </div>
-          <!-- Wrap the popup form instance -->
-          <div class="constant-contact-wrapper">
-            <ConstantContactForm />
-          </div>
+          <NewsletterSignupForm />
         </div>
       </div>
 
@@ -188,94 +185,9 @@
   </footer>
 </template>
 
-<style scoped>
-/* Apply CTCT styles only within the constant-contact-wrapper using deep selectors */
-.constant-contact-wrapper ::v-deep .ctct-form-container,
-.constant-contact-wrapper ::v-deep .ctct-form-defaults,
-.constant-contact-wrapper ::v-deep .ctct-form-custom,
-.constant-contact-wrapper ::v-deep .ctct-form-success,
-.constant-contact-wrapper ::v-deep .ctct-form-error {
-  max-width: 100% !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  background: transparent !important;
-}
-
-.constant-contact-wrapper ::v-deep .ctct-form-header {
-  font-size: 1rem !important;
-  margin-bottom: 0.5rem !important;
-  color: #fff !important;
-}
-
-.constant-contact-wrapper ::v-deep .ctct-form-text {
-  font-size: 0.75rem !important;
-  margin-bottom: 0.5rem !important;
-  line-height: 1.2 !important;
-  color: #fff !important;
-}
-
-.constant-contact-wrapper ::v-deep .ctct-form-label {
-  color: #fff !important;
-}
-
-.constant-contact-wrapper ::v-deep .ctct-form-required {
-  color: #fff !important;
-}
-
-.constant-contact-wrapper ::v-deep .ctct-form-field {
-  margin-bottom: 0.5rem !important;
-}
-
-.constant-contact-wrapper ::v-deep .ctct-form-element {
-  padding: 0.25rem 0.5rem !important;
-  height: 2rem !important;
-  background: #fff !important;
-  border: 1px solid #e5e7eb !important;
-  color: #1f2937 !important;
-  border-radius: 0.375rem !important;
-}
-
-.constant-contact-wrapper ::v-deep .ctct-form-button {
-  padding: 0.25rem !important;
-  height: 2rem !important;
-  background: #fe9601 !important;
-  color: #fff !important;
-  border-radius: 0.375rem !important;
-}
-
-.constant-contact-wrapper ::v-deep .ctct-gdpr-text {
-  font-size: 0.625rem !important;
-  line-height: 1.2 !important;
-  display: none !important;
-  margin-top: 0.5rem !important;
-}
-
-.constant-contact-wrapper ::v-deep .ctct-form-footer {
-  display: none !important;
-}
-
-.constant-contact-wrapper ::v-deep #gdpr_text {
-  background: transparent !important;
-}
-
-.constant-contact-wrapper ::v-deep .ctct-inline-form .ctct-form-defaults {
-  background: transparent !important;
-}
-
-.constant-contact-wrapper ::v-deep .ctct-form-element:focus {
-  outline: none !important;
-  border-color: #fe9601 !important;
-  box-shadow: 0 0 0 2px rgba(254, 150, 1, 0.2) !important;
-}
-
-.constant-contact-wrapper ::v-deep .ctct-form-element::placeholder {
-  color: #6b7280 !important;
-}
-</style>
+<style scoped></style>
 
 <script setup>
-import ConstantContactForm from "~/components/constantContactForm.vue";
-
 const footerLinks = [
   { text: "Home", url: "/" },
   { text: "About Us", url: "/about" },
