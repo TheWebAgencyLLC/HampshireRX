@@ -22,6 +22,24 @@
             Home
           </NuxtLink>
           <NuxtLink
+            v-if="currentRoute !== '/telehealth'"
+            to="/telehealth"
+            @click="handleNavClick('Telehealth', '/telehealth')"
+            class="text-black hover:text-orange-500 transition-colors duration-200 relative"
+          >
+            Telehealth
+          </NuxtLink>
+          <a
+            v-if="currentRoute !== '/transfer-prescription'"
+            href="/transfer-prescription"
+            @click="
+              handleNavClick('Prescription Transfer', '/transfer-prescription')
+            "
+            class="text-black hover:text-orange-500 transition-colors duration-200 relative"
+          >
+            Prescription Transfer
+          </a>
+          <NuxtLink
             v-if="currentRoute !== '/about'"
             to="/about"
             @click="handleNavClick('About', '/about')"
@@ -45,16 +63,6 @@
           >
             FAQ
           </NuxtLink>
-          <a
-            v-if="currentRoute !== '/transfer-prescription'"
-            href="/transfer-prescription"
-            @click="
-              handleNavClick('Prescription Transfer', '/transfer-prescription')
-            "
-            class="text-black hover:text-orange-500 transition-colors duration-200 relative"
-          >
-            Prescription Transfer
-          </a>
           <NuxtLink
             to="https://www.facebook.com/HampshirePharmacy/"
             target="_blank"
@@ -168,6 +176,40 @@
         </nav>
 
         <!-- Bottom Info Section -->
+         <div class="p-4">
+          <div class="mt-auto bg-gray-100 rounded-lg">
+            <div class="p-8">
+              <!-- Increased padding -->
+              <h2 class="text-2xl font-semibold text-gray-900 mb-3">
+                Try our telehealth services
+              </h2>
+              <p class="text-gray-600 mb-6">
+                <!-- Increased margin bottom -->
+                Healthcare on your schedule
+              </p>
+              <NuxtLink
+                to="https://landing.xpedicare.com/#/dl79"
+                class="inline-flex items-center text-blue-500 hover:text-blue-600 font-medium"
+              >
+                Learn More
+                <svg
+                  class="w-5 h-5 ml-1"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <!-- Diagonal up-right arrow -->
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M7 17L17 7M17 7H7M17 7V17"
+                  />
+                </svg>
+              </NuxtLink>
+            </div>
+          </div>
+        </div>
         <div class="p-4">
           <div class="mt-auto bg-gray-100 rounded-lg">
             <div class="p-8">
@@ -235,10 +277,11 @@ const isMobileMenuOpen = ref(false);
 
 const navigationLinks = [
   { name: "Home", to: "/" },
+  { name: "Telehealth", to:"/telehealth" },
+  { name: "Prescription Transfer", to: "/transfer-prescription" },
   { name: "About", to: "/about" },
   { name: "Privacy", to: "/privacy" },
   { name: "FAQ", to: "/faq" },
-  { name: "Prescription Transfer", to: "/transfer-prescription" },
   { name: "Facebook", to: "https://www.facebook.com/HampshirePharmacy/" },
 ];
 
